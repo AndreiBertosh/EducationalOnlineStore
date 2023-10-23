@@ -7,9 +7,7 @@ namespace CartingService
     public class CartActions<T> : ICartActions<T>
         where T : CartItem
     {
-        private readonly string _databaseName = string.Empty;
-        private readonly string _collectionName = string.Empty;
-        private CartRepository<CartItem> _cartRepository;
+        private readonly CartRepository<CartItem> _cartRepository;
 
         public CartActions(string databaseName, string collectionName)
         {
