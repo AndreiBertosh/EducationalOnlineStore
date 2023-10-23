@@ -13,7 +13,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sources", "Sources", "{B877
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CartingServiceDALTests", "Tests\CartingServiceDALTests\CartingServiceDALTests.csproj", "{891338C2-3D76-462E-AA77-BC5330E9AA89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CartingServiceBysinessLogicTests", "Tests\CartingServiceBysinessLogicTests\CartingServiceBysinessLogicTests.csproj", "{CAE9B809-3F21-499C-96AA-267610575491}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CartingServiceBysinessLogicTests", "Tests\CartingServiceBysinessLogicTests\CartingServiceBysinessLogicTests.csproj", "{CAE9B809-3F21-499C-96AA-267610575491}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CatalogService", "CatalogService", "{D0E1DF7B-F3AC-4E38-BEC1-AEECF800B520}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogService", "CatalogService\CatalogService.csproj", "{B5E5A747-4BA6-40D2-B8DA-34DC644BC25D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +41,10 @@ Global
 		{CAE9B809-3F21-499C-96AA-267610575491}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAE9B809-3F21-499C-96AA-267610575491}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAE9B809-3F21-499C-96AA-267610575491}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5E5A747-4BA6-40D2-B8DA-34DC644BC25D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5E5A747-4BA6-40D2-B8DA-34DC644BC25D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5E5A747-4BA6-40D2-B8DA-34DC644BC25D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5E5A747-4BA6-40D2-B8DA-34DC644BC25D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +54,8 @@ Global
 		{40C8D635-191A-46F3-B6FD-FDDCF5831BF6} = {B8775E17-01F5-4D95-85F5-C51B8C324811}
 		{891338C2-3D76-462E-AA77-BC5330E9AA89} = {68F10E73-D917-4A41-8457-3D36559ECBE1}
 		{CAE9B809-3F21-499C-96AA-267610575491} = {68F10E73-D917-4A41-8457-3D36559ECBE1}
+		{D0E1DF7B-F3AC-4E38-BEC1-AEECF800B520} = {B8775E17-01F5-4D95-85F5-C51B8C324811}
+		{B5E5A747-4BA6-40D2-B8DA-34DC644BC25D} = {D0E1DF7B-F3AC-4E38-BEC1-AEECF800B520}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4BD41CBC-9E53-496D-A1F3-9356D820C86C}
