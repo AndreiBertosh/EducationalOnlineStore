@@ -1,6 +1,8 @@
-﻿namespace Infrastructure.Interfaces
+﻿using Infrastructure.Interfaces;
+
+namespace Domain.Interfaces
 {
-    public interface IRepository<T>
+    public interface IActions<T>
         where T : IEntity
     {
         Task<int> Add(T item);
@@ -14,3 +16,4 @@
         Task<bool> Update(T item);
     }
 }
+

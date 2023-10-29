@@ -1,6 +1,6 @@
 ﻿using Infrastructure.Interfaces;
 
-namespace Infrastructure.Entities
+namespace Domain.Entities
 {
     public class Category : IEntity
     {
@@ -8,7 +8,7 @@ namespace Infrastructure.Entities
 
         public string Name { get; set; }
 
-        public string ImageUrl { get; set; } = string.Empty;
+        public object Image { get; set; }
 
         public int ParentCategoryId { get; set; }
     }

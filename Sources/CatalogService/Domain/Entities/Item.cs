@@ -1,17 +1,16 @@
 ﻿using Infrastructure.Interfaces;
-//using System.Data.Entity;
 
-namespace Infrastructure.Entities
+namespace Domain.Entities
 { 
     public class Item : IEntity
     {
         public int Id { get; set; }
 
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; }
 
-        public string Description { get; set; } = string.Empty;
+        public string Description { get; set; }
 
-        public string ImageUrl { get; set; } = string.Empty;
+        public object Image { get; set; }
 
         public int CategoryId { get; set; }
 

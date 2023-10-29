@@ -38,7 +38,7 @@ namespace InfrastructureTests
             testDatabase.Categories.Add(category);
             testDatabase.SaveChanges();
 
-            ItemModel item = new() { Name = "testItem", CategoryId = category.Id  };
+            ItemModel item = new() { Name = "testItem", CategoryId = category.Id };
             var repository = new ItemRepository(testDatabase);
 
             // Act
@@ -64,7 +64,7 @@ namespace InfrastructureTests
             var repository = new ItemRepository(testDatabase);
 
             // Act
-            var result = repository.Delete(item).Result;
+            var result = repository.Delete(item.Id).Result;
 
             // Assert
             Assert.True(result);

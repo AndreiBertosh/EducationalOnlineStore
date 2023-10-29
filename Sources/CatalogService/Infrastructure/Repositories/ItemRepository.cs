@@ -20,11 +20,16 @@ namespace Infrastructure.Repositories
             return Task.FromResult(item.Id);
         }
 
-        public Task<bool> Delete(ItemModel item)
+        public Task<bool> Delete(int id)
         {
-            _context.Items.Remove(item);
-            _context.SaveChanges();
-            return Task.FromResult(true);
+            var item = _context.Items.Find(id);
+            if (item != null)
+            {
+                _context.Items.Remove(item);
+                _context.SaveChanges();
+                return Task.FromResult(true);
+            }
+            return Task.FromResult(false);
         }
 
         public Task<List<ItemModel>> GetAll()

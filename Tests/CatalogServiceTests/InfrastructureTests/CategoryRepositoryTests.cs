@@ -1,4 +1,4 @@
-using Infrastructure;
+﻿using Infrastructure;
 using Infrastructure.Models;
 using Infrastructure.Repositories;
 
@@ -58,7 +58,7 @@ namespace InfrastructureTests
             var repository = new CategoryRepository(testDatabase);
 
             // Act
-            var result = repository.Delete(category).Result;
+            var result = repository.Delete(category.Id).Result;
 
             // Assert
             Assert.True(result);
@@ -72,7 +72,7 @@ namespace InfrastructureTests
             CategoryModel category = new CategoryModel() { Name = "testCategory" };
             testDatabase.Categories.Add(category);
             testDatabase.SaveChanges();
-            
+
             category.Name = "New Name";
             var repository = new CategoryRepository(testDatabase);
 

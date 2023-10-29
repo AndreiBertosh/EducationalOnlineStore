@@ -8,7 +8,7 @@ namespace Infrastructure.Repositories
         private readonly InfrastructureContext _context;
 
         public CategoryRepository(InfrastructureContext context)
-        { 
+        {
             _context = context;
         }
 
@@ -19,11 +19,16 @@ namespace Infrastructure.Repositories
             return Task.FromResult(item.Id);
         }
 
-        public Task<bool> Delete(CategoryModel item)
+        public Task<bool> Delete(int id)
         {
-            _context.Categories.Remove(item);
-            _context.SaveChanges();
-            return Task.FromResult(true);
+            var item = _context.Categories.Find(id);
+            if (item != null)
+            {
+                _context.Categories.Remove(item);
+                _context.SaveChanges();
+                return Task.FromResult(true);
+            }
+            return Task.FromResult(false);
         }
 
         public Task<List<CategoryModel>> GetAll()

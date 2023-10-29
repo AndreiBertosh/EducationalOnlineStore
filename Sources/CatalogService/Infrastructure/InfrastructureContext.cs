@@ -8,6 +8,15 @@ namespace Infrastructure
     {
         private string _connection = string.Empty;
 
+        public InfrastructureContext()
+        { 
+        }
+
+        public InfrastructureContext(string connectionString)
+        {
+            _connection = connectionString;
+        }
+
         public string Connection 
         { 
             set
