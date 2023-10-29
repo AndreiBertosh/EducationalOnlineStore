@@ -38,7 +38,7 @@ namespace CartingServiceBysinessLogicTests
             };
 
             // Act
-            cart.Actions.AddToChart(existingCartItem);
+            cart.Actions.AddToCart(existingCartItem);
 
             // Assert
             var resultItem = cart.Items.Where(x => x.Id == existingCartItem.Id).FirstOrDefault();
@@ -80,7 +80,7 @@ namespace CartingServiceBysinessLogicTests
                     Quantity = 1
                 },
             };
-            existingCartItems.ForEach(item => cart.Actions.AddToChart(item));
+            existingCartItems.ForEach(item => cart.Actions.AddToCart(item));
 
             // Act
             var resultCartItems = cart.Items;

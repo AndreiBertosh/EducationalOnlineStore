@@ -24,7 +24,7 @@ namespace CartingServiceDALTests
             // Arrange
             var repository = new CartRepository<CartItem>(_testDatabaseName, _testCollectionName);
 
-            var chartItem = new CartItem()
+            var cartItem = new CartItem()
             {
                 Name = "TestItem",
                 Price = 10,
@@ -32,7 +32,7 @@ namespace CartingServiceDALTests
             };
 
             // Act
-            var id = repository.Add(chartItem).Result;
+            var id = repository.Add(cartItem).Result;
 
             // Assert
             Assert.True(id > 0);
@@ -44,7 +44,7 @@ namespace CartingServiceDALTests
             // Arrange
             var repository = new CartRepository<CartItem>(_testDatabaseName, _testCollectionName);
 
-            var chartItem = new CartItem()
+            var cartItem = new CartItem()
             {
                 Name = "TestItemToDelete",
                 Price = 10,
@@ -54,18 +54,18 @@ namespace CartingServiceDALTests
             using (var database = new LiteDatabase(_testDatabaseName))
             {
                 var collection = database.GetCollection<CartItem>(_testCollectionName);
-                collection.Insert(chartItem);
+                collection.Insert(cartItem);
             }
 
             // Act
-            var result = repository.Delete(chartItem).Result;
+            var result = repository.Delete(cartItem).Result;
 
             // Assert
             Assert.True(result);
         }
 
         [Fact]
-        public void GetAll_WhenEntitiIsCorrect_ReturnsListChartItem()
+        public void GetAll_WhenEntitiIsCorrect_ReturnsListCartItem()
         {
             // Arrange
             var repository = new CartRepository<CartItem>(_testDatabaseName, _testCollectionName);
@@ -100,7 +100,7 @@ namespace CartingServiceDALTests
         }
 
         [Fact]
-        public void GetById_WhenEntitiIsCorrect_ReturnsChartItem()
+        public void GetById_WhenEntitiIsCorrect_ReturnsCartItem()
         {
             // Arrange
             var repository = new CartRepository<CartItem>(_testDatabaseName, _testCollectionName);
@@ -153,7 +153,7 @@ namespace CartingServiceDALTests
         }
 
         [Fact]
-        public void Update_WhenEntitiIsCorrect_ReturnsChartItem()
+        public void Update_WhenEntitiIsCorrect_ReturnsCartItem()
         {
             // Arrange
             var repository = new CartRepository<CartItem>(_testDatabaseName, _testCollectionName);

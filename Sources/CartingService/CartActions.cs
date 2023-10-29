@@ -14,7 +14,7 @@ namespace CartingService
             _cartRepository = new CartRepository<CartItem>(databaseName, collectionName);
         }
 
-        public Task<int> AddToChart(T item)
+        public Task<int> AddToCart(T item)
         {
             var id = _cartRepository.Add(item).Result;
 
@@ -28,7 +28,7 @@ namespace CartingService
             return Task.FromResult(result);
         }
 
-        public Task<bool> RemoevFromChart(T item)
+        public Task<bool> RemoevFromCart(T item)
         {
             return Task.FromResult(_cartRepository.Delete(item).Result);
         }
