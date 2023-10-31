@@ -50,7 +50,6 @@ namespace InfrastructureTests
         [Fact]
         public void DeleteCategory_WhenModelIsOk_ReturnsTrue()
         {
-
             // Arrange
             CategoryModel category = new CategoryModel() { Name = "testCategory" };
             testDatabase.Categories.Add(category);
@@ -83,7 +82,7 @@ namespace InfrastructureTests
             Assert.True(result);
 
             var updatedCategory = testDatabase.Categories.Find(category.Id);
-            Assert.Equivalent(category.Name, updatedCategory?.Name);
+            Assert.Equivalent("New Name", updatedCategory?.Name);
         }
 
         [Fact]

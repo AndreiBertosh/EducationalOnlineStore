@@ -1,6 +1,6 @@
 ﻿using Infrastructure.Interfaces;
 
-namespace Domain.Interfaces
+namespace Infrastructure.Interfaces
 {
     public interface IActions<T>
         where T : IEntity

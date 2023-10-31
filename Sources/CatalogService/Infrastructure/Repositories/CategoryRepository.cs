@@ -46,6 +46,7 @@ namespace Infrastructure.Repositories
         public Task<bool> Update(CategoryModel item)
         {
             _context.Categories.Update(item);
+            _context.SaveChanges(false);
             return Task.FromResult(true);
         }
     }

@@ -11,7 +11,6 @@ namespace DomainTests
         [Fact]
         public void AddCategory_WhenModelIsOk_ReturnsId()
         {
-
             // Arrange
             var repository = new Mock<IRepository<CategoryModel>>();
             repository.Setup(a => a.Add(It.IsAny<CategoryModel>())).Returns(Task.FromResult(1));

@@ -1,5 +1,4 @@
-﻿using Domain.Interfaces;
-using Infrastructure.Entities;
+﻿using Infrastructure.Entities;
 using Infrastructure.Models;
 using Infrastructure.Interfaces;
 

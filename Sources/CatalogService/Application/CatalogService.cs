@@ -14,7 +14,7 @@ namespace Application
         private CategoryActions _categoryActions;
         private ItemActions _itemActions;
 
-        public CatalogService(string connection) 
+        public CatalogService(string? connection) 
         {
             string _connection = string.Empty;
 
