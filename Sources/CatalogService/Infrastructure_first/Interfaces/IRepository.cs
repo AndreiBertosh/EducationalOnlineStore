@@ -1,7 +1,7 @@
-﻿namespace CartingServiceDAL.Infrastructure.Interfaces
+﻿namespace CatalogService.Infrastructure.Interfaces
 {
     public interface IRepository<T>
-        where T : IEntity
+        where T : IItem
     {
         Task<int> Add(T item);
 
@@ -9,7 +9,7 @@
 
         Task<T?> GetById(int id);
 
-        Task<List<T>> GetAll();
+        Task<IList<T>> GetAll();
 
         Task<T> Update(T item);
     }

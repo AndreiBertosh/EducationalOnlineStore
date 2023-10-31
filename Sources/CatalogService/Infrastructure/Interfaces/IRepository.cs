@@ -1,16 +1,16 @@
-﻿namespace CartingServiceDAL.Infrastructure.Interfaces
+﻿namespace Infrastructure.Interfaces
 {
     public interface IRepository<T>
         where T : IEntity
     {
         Task<int> Add(T item);
 
-        Task<bool> Delete(T item);
+        Task<bool> Delete(int id);
 
         Task<T?> GetById(int id);
 
         Task<List<T>> GetAll();
 
-        Task<T> Update(T item);
+        Task<bool> Update(T item);
     }
 }
