@@ -1,10 +1,10 @@
 ﻿using Moq;
-using Infrastructure.Interfaces;
-using Infrastructure.Entities;
-using Infrastructure.Models;
-using Domain.Actions;
+using Application.Actions;
+using Domain.Interfaces;
+using Domain.Entities;
+using Domain.Models;
 
-namespace DomainTests
+namespace ApplicationTests
 {
     public class ItemActionTests
     {

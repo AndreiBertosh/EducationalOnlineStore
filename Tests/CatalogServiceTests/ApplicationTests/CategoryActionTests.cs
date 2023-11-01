@@ -1,10 +1,10 @@
 using Moq;
-using Infrastructure.Interfaces;
-using Infrastructure.Entities;
-using Infrastructure.Models;
-using Domain.Actions;
+using Application.Actions;
+using Domain.Interfaces;
+using Domain.Entities;
+using Domain.Models;
 
-namespace DomainTests
+namespace ApplicationTests
 {
     public class CategoryActionTests
     {
@@ -80,7 +80,7 @@ namespace DomainTests
 
             CategoryActions actions = new CategoryActions(repository.Object);
 
-            Category category = new Category
+            Category category = new()
             {
                 Id = 1,
                 Name = "Category",

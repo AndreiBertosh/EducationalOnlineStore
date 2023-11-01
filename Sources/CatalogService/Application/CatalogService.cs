@@ -1,4 +1,4 @@
-﻿using Domain.Actions;
+﻿using Application.Actions;
 using Infrastructure;
 using Infrastructure.Repositories;
 

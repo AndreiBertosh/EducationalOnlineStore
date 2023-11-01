@@ -1,11 +1,13 @@
-﻿using Infrastructure.Interfaces;
+﻿using Domain.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
-namespace Infrastructure.Entities
+namespace Domain.Models
 {
-    public class Category : IEntity
+    public class CategoryModel : IEntity
     {
+        [Key]
         public int Id { get; set; }
-
+        
         public string Name { get; set; }
 
         public string ImageUrl { get; set; } = string.Empty;

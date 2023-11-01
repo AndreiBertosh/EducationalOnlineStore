@@ -1,8 +1,8 @@
-﻿using Infrastructure.Entities;
-using Infrastructure.Models;
-using Infrastructure.Interfaces;
+﻿using Domain.Entities;
+using Domain.Models;
+using Domain.Interfaces;
 
-namespace Domain.Actions
+namespace Application.Actions
 {
     public class ItemActions : IActions<Item>
     {

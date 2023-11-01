@@ -1,6 +1,6 @@
-﻿using Infrastructure.Entities;
-using Infrastructure.Interfaces;
-using Infrastructure.Models;
+﻿using Domain.Entities;
+using Domain.Interfaces;
+using Domain.Models;
 
 namespace Infrastructure.Repositories
 {

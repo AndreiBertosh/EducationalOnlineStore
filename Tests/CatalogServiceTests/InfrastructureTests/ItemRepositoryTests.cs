@@ -1,5 +1,5 @@
-﻿using Infrastructure;
-using Infrastructure.Models;
+﻿using Domain.Models;
+using Infrastructure;
 using Infrastructure.Repositories;
 
 namespace InfrastructureTests

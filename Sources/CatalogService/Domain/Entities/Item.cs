@@ -1,7 +1,6 @@
-﻿using Infrastructure.Interfaces;
-//using System.Data.Entity;
+﻿using Domain.Interfaces;
 
-namespace Infrastructure.Entities
+namespace Domain.Entities
 { 
     public class Item : IEntity
     {

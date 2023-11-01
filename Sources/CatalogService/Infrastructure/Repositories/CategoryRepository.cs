@@ -1,5 +1,5 @@
-﻿using Infrastructure.Interfaces;
-using Infrastructure.Models;
+﻿using Domain.Interfaces;
+using Domain.Models;
 
 namespace Infrastructure.Repositories
 {
