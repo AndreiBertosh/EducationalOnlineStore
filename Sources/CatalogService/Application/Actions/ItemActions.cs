@@ -1,23 +1,20 @@
 ﻿using Domain.Entities;
-using Domain.Models;
 using Domain.Interfaces;
 
 namespace Application.Actions
 {
     public class ItemActions : IActions<Item>
     {
-        private readonly IRepository<ItemModel> _repository;
+        private readonly IRepository<Item> _repository;
 
-        public ItemActions(IRepository<ItemModel> repository)
+        public ItemActions(IRepository<Item> repository)
         {
             _repository = repository;
         }
 
         public Task<int> Add(Item item)
         {
-            ItemModel model = MappingItemToModel(item);
-
-            return Task.FromResult(_repository.Add(model).Result);
+            return Task.FromResult(_repository.Add(item).Result);
         }
 
         public Task<bool> Delete(int id)
@@ -27,58 +24,17 @@ namespace Application.Actions
 
         public Task<List<Item>> GetAll()
         {
-            List<ItemModel> models = _repository.GetAll().Result;
-
-            if (models != null)
-            {
-                return Task.FromResult(models.Where(m => m != null).Select(m => MappingModelToItem(m)).ToList());
-            }
-
-            return Task.FromResult(new List<Item>());
+            return Task.FromResult(_repository.GetAll().Result);
         }
 
         public Task<Item?> GetById(int id)
         {
-            ItemModel? model = _repository.GetById(id).Result;
-
-            return Task.FromResult(MappingModelToItem(model));
+            return Task.FromResult(_repository.GetById(id).Result);
         }
 
         public Task<bool> Update(Item item)
         {
-            return Task.FromResult(_repository.Update(MappingItemToModel(item)).Result);
-        }
-
-        private static ItemModel MappingItemToModel(Item item)
-        {
-            return new ItemModel
-            {
-                Id = item.Id,
-                Name = item.Name,
-                Description = item.Description,
-                ImageUrl = item.ImageUrl,
-                CategoryId = item.CategoryId,
-                Amount = item.Amount,
-                Price = item.Price
-            };
-        }
-
-        private static Item? MappingModelToItem(ItemModel? model)
-        {
-            if (model != null)
-            {
-                return new Item
-                {
-                    Id = model.Id,
-                    Name = model.Name,
-                    Description = model.Description,
-                    ImageUrl = model.ImageUrl,
-                    CategoryId = model.CategoryId,
-                    Amount = model.Amount,
-                    Price = model.Price
-                };
-            }
-            return null;
+            return Task.FromResult(_repository.Update(item).Result);
         }
     }
 }

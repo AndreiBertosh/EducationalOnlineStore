@@ -1,23 +1,20 @@
 ﻿using Domain.Entities;
-using Domain.Models;
 using Domain.Interfaces;
 
 namespace Application.Actions
 {
     public class CategoryActions : IActions<Category>
     {
-        private readonly IRepository<CategoryModel> _repository;
+        private readonly IRepository<Category> _repository;
 
-        public CategoryActions(IRepository<CategoryModel> repository)
+        public CategoryActions(IRepository<Category> repository)
         {
             _repository = repository;
         }   
 
         public Task<int> Add(Category item)
         {
-            CategoryModel model = MappingCategoryToModel(item);
-
-            return Task.FromResult(_repository.Add(model).Result);
+            return Task.FromResult(_repository.Add(item).Result);
         }
 
         public Task<bool> Delete(int id)
@@ -27,52 +24,17 @@ namespace Application.Actions
 
         public Task<List<Category>> GetAll()
         {
-            List<CategoryModel> models = _repository.GetAll().Result;
-
-            if (models != null)
-            {
-                return Task.FromResult(models.Where(m => m != null).Select(m => MappingModelToCategory(m)).ToList());
-            }
-
-            return Task.FromResult(new List<Category>());
+            return Task.FromResult(_repository.GetAll().Result);
         }
 
         public Task<Category?> GetById(int id)
         {
-            CategoryModel? model = _repository.GetById(id).Result;
-
-            return Task.FromResult(MappingModelToCategory(model));
+            return Task.FromResult(_repository.GetById(id).Result);
         }
 
         public Task<bool> Update(Category item)
         {
-            return Task.FromResult(_repository.Update(MappingCategoryToModel(item)).Result);
-        }
-
-        private static CategoryModel MappingCategoryToModel(Category category)
-        {
-            return new CategoryModel
-            {
-                Id = category.Id,
-                Name = category.Name,
-                ImageUrl = category.ImageUrl,
-                ParentCategoryId = category.ParentCategoryId
-            };
-        }
-
-        private static Category? MappingModelToCategory(CategoryModel? model)
-        {
-            if (model != null)
-            {
-                return new Category
-                {
-                    Id = model.Id,
-                    Name = model.Name,
-                    ImageUrl = model.ImageUrl,
-                    ParentCategoryId = model.ParentCategoryId
-                };
-            }
-            return null;
+            return Task.FromResult(_repository.Update(item).Result);
         }
     }
 }

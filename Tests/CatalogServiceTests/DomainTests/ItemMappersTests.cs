@@ -1,12 +1,6 @@
-﻿using AutoMapper;
-using Domain.Entities;
-using Domain.Models;
+﻿using Domain.Entities;
 using Domain.Mappers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Domain.Models;
 
 namespace DomainTests
 {
@@ -130,7 +124,7 @@ namespace DomainTests
         }
 
         [Fact]
-        public void ModelToItemMapper_WhenMapListItemModels_ReturnsItemList()
+        public void ModelToItemMapper_WhenMapListItemModels_ReturnsItemModelist()
         {
             // Arrange
             List<ItemModel> itemModels = new()
@@ -182,37 +176,6 @@ namespace DomainTests
 
             // Assert
             Assert.Equivalent(expectedItems, result);
-        }
-
-        [Fact]
-        public void ModelToItemMapper111_WhenMapOneItemModel_ReturnsItem()
-        {
-            // Arrange
-            Item itemModel = new()
-            {
-                Name = "Item Name",
-                Description = "Description",
-                ImageUrl = "url",
-                CategoryId = 1,
-                Amount = 1,
-                Price = 10,
-            };
-
-            ItemModel expectedItem = new()
-            {
-                Name = "Item Name",
-                Description = "Description",
-                ImageUrl = "url",
-                CategoryId = 1,
-                Amount = 1,
-                Price = 10,
-            };
-
-            // Act
-            var result = EntityModelMappers.ModelToItemMapper().Map<ItemModel>(itemModel);
-
-            // Assert
-            Assert.Equivalent(expectedItem, result);
         }
     }
 }

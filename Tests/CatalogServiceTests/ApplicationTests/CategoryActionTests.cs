@@ -12,8 +12,8 @@ namespace ApplicationTests
         public void AddCategory_WhenModelIsOk_ReturnsId()
         {
             // Arrange
-            var repository = new Mock<IRepository<CategoryModel>>();
-            repository.Setup(a => a.Add(It.IsAny<CategoryModel>())).Returns(Task.FromResult(1));
+            var repository = new Mock<IRepository<Category>>();
+            repository.Setup(a => a.Add(It.IsAny<Category>())).Returns(Task.FromResult(1));
 
             CategoryActions actions = new CategoryActions(repository.Object);
 
@@ -33,7 +33,7 @@ namespace ApplicationTests
         public void DeleteCategory_WhenModelIsOk_ReturnsTrue()
         {
             // Arrange
-            var repository = new Mock<IRepository<CategoryModel>>();
+            var repository = new Mock<IRepository<Category>>();
             repository.Setup(a => a.Delete(It.IsAny<int>())).Returns(Task.FromResult(true));
 
             CategoryActions actions = new CategoryActions(repository.Object);
@@ -54,7 +54,7 @@ namespace ApplicationTests
         public void DeleteCategory_WhenModelIsNotOk_ReturnsFalse()
         {
             // Arrange
-            var repository = new Mock<IRepository<CategoryModel>>();
+            var repository = new Mock<IRepository<Category>>();
             repository.Setup(a => a.Delete(It.IsAny<int>())).Returns(Task.FromResult(false));
 
             CategoryActions actions = new CategoryActions(repository.Object);
@@ -75,8 +75,8 @@ namespace ApplicationTests
         public void UpdateCategory_WhenModelIsOk_ReturnsTrue()
         {
             // Arrange
-            var repository = new Mock<IRepository<CategoryModel>>();
-            repository.Setup(a => a.Update(It.IsAny<CategoryModel>())).Returns(Task.FromResult(true));
+            var repository = new Mock<IRepository<Category>>();
+            repository.Setup(a => a.Update(It.IsAny<Category>())).Returns(Task.FromResult(true));
 
             CategoryActions actions = new CategoryActions(repository.Object);
 
@@ -98,7 +98,7 @@ namespace ApplicationTests
         public void GetById_WhenModelIsOk_ReturnsCategoryModel()
         {
             // Arrange
-            CategoryModel categoryModel = new()
+            Category category = new()
             {
                 Id = 1,
                 Name = "Category model",
@@ -112,8 +112,8 @@ namespace ApplicationTests
                 ImageUrl = string.Empty
             };
 
-            var repository = new Mock<IRepository<CategoryModel>>();
-            repository.Setup(a => a.GetById(It.IsAny<int>())).Returns(Task.FromResult(categoryModel));
+            var repository = new Mock<IRepository<Category>>();
+            repository.Setup(a => a.GetById(It.IsAny<int>())).Returns(Task.FromResult(category));
 
             CategoryActions actions = new CategoryActions(repository.Object);
 
@@ -128,14 +128,14 @@ namespace ApplicationTests
         public void GetAll_WhenModelIsOk_ReturnsListCategoryModel()
         {
             // Arrange
-            List<CategoryModel> categoryModels = new()
+            List<Category> categories = new()
             {
-                new CategoryModel {
+                new() {
                     Id = 1, 
                     Name = "Category model",
                     ImageUrl = string.Empty
                 },
-                new CategoryModel {
+                new() {
                     Id = 2,
                     Name = "Category model 2",
                     ImageUrl = string.Empty
@@ -144,20 +144,20 @@ namespace ApplicationTests
 
             List<Category> expectrdCategories = new()
             {
-                new Category {
+                new() {
                     Id = 1,
                     Name = "Category model",
                     ImageUrl = string.Empty
                 },
-                new Category {
+                new() {
                     Id = 2,
                     Name = "Category model 2",
                     ImageUrl = string.Empty
                 }
             };
 
-            var repository = new Mock<IRepository<CategoryModel>>();
-            repository.Setup(a => a.GetAll()).Returns(Task.FromResult(categoryModels));
+            var repository = new Mock<IRepository<Category>>();
+            repository.Setup(a => a.GetAll()).Returns(Task.FromResult(categories));
 
             CategoryActions actions = new CategoryActions(repository.Object);
 

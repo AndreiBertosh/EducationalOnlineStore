@@ -1,6 +1,8 @@
 ﻿using Infrastructure;
 using Domain.Models;
+using Domain.Entities;
 using Infrastructure.Repositories;
+using Domain.Mappers;
 
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
 namespace InfrastructureTests
@@ -36,19 +38,25 @@ namespace InfrastructureTests
         {
 
             // Arrange
-            CategoryModel category = new CategoryModel() { Name = "testCategory" };
+            Category category = new() 
+            { 
+                Name = "testCategory" 
+            };
             var repository = new CategoryRepository(testDatabase);
+            var expectedRecordsCount = testDatabase.Categories.Count() + 1;
 
             // Act
-            repository.Add(category);
+            var id = repository.Add(category).Result;
 
             // Assert
             Assert.True(testDatabase.Categories.Any());
-            Assert.True(category.Id > 0);
+            Assert.True(id > 0);
+            var recordsCount = testDatabase.Categories.Count();
+            Assert.Equal(expectedRecordsCount, recordsCount);
         }
 
         [Fact]
-        public void DeleteCategory_WhenModelIsOk_ReturnsTrue()
+        public void DeleteCategory_WhenRecordFound_ReturnsTrue()
         {
             // Arrange
             CategoryModel category = new CategoryModel() { Name = "testCategory" };
@@ -64,15 +72,38 @@ namespace InfrastructureTests
         }
 
         [Fact]
+        public void DeleteCategory_WhenRecordNotFound_ReturnsFalse()
+        {
+            // Arrange
+            var repository = new CategoryRepository(testDatabase);
+
+            // Act
+            var result = repository.Delete(1000000).Result;
+
+            // Assert
+            Assert.False(result);
+        }
+
+        [Fact]
         public void UpdateCategory_WhenModelIsOk_ReturnsTrueAndModelIsChanged()
         {
 
             // Arrange
-            CategoryModel category = new CategoryModel() { Name = "testCategory" };
-            testDatabase.Categories.Add(category);
+            CategoryModel categoryModel = new()
+            { 
+                Name = "testCategory",
+                ImageUrl = string.Empty
+            };
+            testDatabase.Categories.Add(categoryModel);
             testDatabase.SaveChanges();
 
-            category.Name = "New Name";
+            Category category = new()
+            {
+                Id = categoryModel.Id,
+                Name = "New Name",
+                ImageUrl = string.Empty
+            };
+            
             var repository = new CategoryRepository(testDatabase);
 
             // Act
@@ -81,7 +112,7 @@ namespace InfrastructureTests
             // Assert
             Assert.True(result);
 
-            var updatedCategory = testDatabase.Categories.Find(category.Id);
+            var updatedCategory = testDatabase.Categories.Find(categoryModel.Id);
             Assert.Equivalent("New Name", updatedCategory?.Name);
         }
 
@@ -90,14 +121,15 @@ namespace InfrastructureTests
         {
 
             // Arrange
-            CategoryModel expectedCategory = new CategoryModel() { Name = "testCategory" };
-            testDatabase.Categories.Add(expectedCategory);
+            CategoryModel categoryModel = new CategoryModel() { Name = "testCategory" };
+            testDatabase.Categories.Add(categoryModel);
             testDatabase.SaveChanges();
 
+            var expectedCategory = EntityModelMappers.ModelToCategoryMapper().Map<Category>(categoryModel);
             var repository = new CategoryRepository(testDatabase);
 
             // Act
-            var result = repository.GetById(expectedCategory.Id).Result;
+            var result = repository.GetById(categoryModel.Id).Result;
 
             // Assert
             Assert.Equivalent(expectedCategory, result);
@@ -108,23 +140,26 @@ namespace InfrastructureTests
         {
 
             // Arrange
-            List<CategoryModel> expectrdCategoryModels = new List<CategoryModel>
+            List<CategoryModel> categoryModels = new List<CategoryModel>
             {
                 new CategoryModel() { Name = "testCategory1" },
                 new CategoryModel() { Name = "testCategory2" }
             };
 
-            testDatabase.Categories.AddRange(expectrdCategoryModels);
+            testDatabase.Categories.AddRange(categoryModels);
             testDatabase.SaveChanges();
 
+            var expectedCategories = EntityModelMappers.ModelToCategoryMapper().Map<List<Category>>(categoryModels);
             var repository = new CategoryRepository(testDatabase);
 
             // Act
             var result = repository.GetAll().Result;
 
             // Assert
-            var intersected = result.Intersect(expectrdCategoryModels).ToList();
-            Assert.Equivalent(expectrdCategoryModels, intersected);
+            foreach (Category category in expectedCategories)
+            {
+                Assert.True(result.Any(c => c.Id == category.Id && c.Name == category.Name));
+            }
         }
     }
 }

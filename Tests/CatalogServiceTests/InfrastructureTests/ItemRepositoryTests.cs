@@ -1,4 +1,6 @@
-﻿using Domain.Models;
+﻿using Domain.Entities;
+using Domain.Mappers;
+using Domain.Models;
 using Infrastructure;
 using Infrastructure.Repositories;
 
@@ -26,6 +28,7 @@ namespace InfrastructureTests
         public void Dispose()
         {
             testDatabase.Categories.RemoveRange(testDatabase.Categories);
+            testDatabase.Items.RemoveRange(testDatabase.Items);
             testDatabase.SaveChanges();
             testDatabase.Dispose();
         }
@@ -38,15 +41,20 @@ namespace InfrastructureTests
             testDatabase.Categories.Add(category);
             testDatabase.SaveChanges();
 
-            ItemModel item = new() { Name = "testItem", CategoryId = category.Id };
+            var expectedRecordsCount = testDatabase.Items.Count() + 1;
+
+            Item item = new() { Name = "testItem", CategoryId = category.Id };
             var repository = new ItemRepository(testDatabase);
 
             // Act
-            repository.Add(item);
+            var id = repository.Add(item).Result;
 
             // Assert
             Assert.True(testDatabase.Items.Any());
-            Assert.True(item.Id > 0);
+            Assert.True(id > 0);
+
+            var recordsCount = testDatabase.Items.Count();
+            Assert.Equal(expectedRecordsCount, recordsCount);
         }
 
         [Fact]
@@ -71,6 +79,19 @@ namespace InfrastructureTests
         }
 
         [Fact]
+        public void DeleteCategory_WhenRecordNotFound_ReturnsFalse()
+        {
+            // Arrange
+            var repository = new ItemRepository(testDatabase);
+
+            // Act
+            var result = repository.Delete(1000000).Result;
+
+            // Assert
+            Assert.False(result);
+        }
+
+        [Fact]
         public void UpdateItem_WhenModelIsOk_ReturnsTrueAndModelIsChanged()
         {
             // Arrange
@@ -78,12 +99,21 @@ namespace InfrastructureTests
             CategoryModel category = new() { Name = "testCategory" };
             testDatabase.Categories.Add(category);
             testDatabase.SaveChanges();
-            ItemModel item = new() { Name = "testItem", CategoryId = category.Id };
-            testDatabase.Items.Add(item);
+            ItemModel itemModel = new()
+            { 
+                Name = "testItem", 
+                CategoryId = category.Id 
+            };
+            testDatabase.Items.Add(itemModel);
             testDatabase.SaveChanges();
 
-            item.Name = "New Name";
-            item.Description = "Description";
+            Item item = new()
+            {
+                Id = itemModel.Id,
+                Name = "New Name",
+                CategoryId = category.Id,
+                Description = "Description"
+            };
 
             var repository = new ItemRepository(testDatabase);
 
@@ -93,7 +123,7 @@ namespace InfrastructureTests
             // Assert
             Assert.True(result);
 
-            var updatedItem = testDatabase.Items.Find(item.Id);
+            var updatedItem = testDatabase.Items.Find(itemModel.Id);
             Assert.Equivalent(updatedItem?.Name, "New Name");
             Assert.Equivalent(updatedItem?.Description, "Description");
         }
@@ -106,17 +136,24 @@ namespace InfrastructureTests
             CategoryModel category = new() { Name = "testCategory" };
             testDatabase.Categories.Add(category);
             testDatabase.SaveChanges();
-            ItemModel item = new() { Name = "testItem", CategoryId = category.Id, Description = "Description" };
-            testDatabase.Items.Add(item);
+            ItemModel itemModel = new() 
+            { 
+                Name = "testItem", 
+                CategoryId = category.Id, 
+                Description = "Description" 
+            };
+            testDatabase.Items.Add(itemModel);
             testDatabase.SaveChanges();
+
+            Item expectedItem = EntityModelMappers.ModelToItemMapper().Map<Item>(itemModel);
 
             var repository = new ItemRepository(testDatabase);
 
             // Act
-            var result = repository.GetById(item.Id).Result;
+            var result = repository.GetById(itemModel.Id).Result;
 
             // Assert
-            Assert.Equivalent(item, result);
+            Assert.Equivalent(expectedItem, result);
         }
 
         [Fact]
@@ -126,14 +163,26 @@ namespace InfrastructureTests
             CategoryModel category = new() { Name = "testCategory" };
             testDatabase.Categories.Add(category);
             testDatabase.SaveChanges();
-            List<ItemModel> expectrdItemModels = new()
+            List<ItemModel> itemModels = new()
             {
-                new() { Name = "testitem1", CategoryId = category.Id, Description = "Description" },
-                new() { Name = "testitem2", CategoryId = category.Id, Description = "Description" }
+                new() 
+                { 
+                    Name = "testitem1", 
+                    CategoryId = category.Id, 
+                    Description = "Description" 
+                },
+                new()
+                {
+                    Name = "testitem2",
+                    CategoryId = category.Id,
+                    Description = "Description" 
+                }
             };
 
-            testDatabase.Items.AddRange(expectrdItemModels);
+            testDatabase.Items.AddRange(itemModels);
             testDatabase.SaveChanges();
+
+            List<Item> expectedItems = EntityModelMappers.ModelToItemMapper().Map<List<Item>>(itemModels);
 
             var repository = new ItemRepository(testDatabase);
 
@@ -141,8 +190,10 @@ namespace InfrastructureTests
             var result = repository.GetAll().Result;
 
             // Assert
-            var intersected = result.Intersect(expectrdItemModels).ToList();
-            Assert.Equivalent(expectrdItemModels, intersected);
+            foreach (Item item in expectedItems)
+            {
+                Assert.True(result.Any(c => c.Id == item.Id && c.Name == item.Name));
+            }
         }
     }
 }
