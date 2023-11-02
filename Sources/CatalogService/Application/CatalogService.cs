@@ -1,6 +1,8 @@
 ﻿using Application.Actions;
 using Infrastructure;
 using Infrastructure.Repositories;
+using Microsoft.IdentityModel.Protocols;
+using System.Configuration;
 
 namespace Application
 {
@@ -16,20 +18,20 @@ namespace Application
 
         public CatalogService(string? connection) 
         {
-            string _connection = string.Empty;
+            string connectionString = string.Empty;
 
             if (string.IsNullOrEmpty(connection))
             {
-                _connection = AppConfig.ConnectionString;
+                connectionString = ConfigurationManager.AppSettings["connectionstring"];
             }
             else 
             {
-                _connection = connection;
+                connectionString = connection;
             }
 
             _context = new()
             {
-                Connection = _connection
+                Connection = connectionString
             };
 
             _categoryRepository = new(_context);
