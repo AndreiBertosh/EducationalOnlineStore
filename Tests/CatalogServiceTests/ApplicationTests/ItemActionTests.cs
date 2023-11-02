@@ -1,10 +1,10 @@
 ﻿using Moq;
-using Infrastructure.Interfaces;
-using Infrastructure.Entities;
-using Infrastructure.Models;
-using Domain.Actions;
+using Application.Actions;
+using Domain.Interfaces;
+using Domain.Entities;
+using Domain.Models;
 
-namespace DomainTests
+namespace ApplicationTests
 {
     public class ItemActionTests
     {
@@ -13,8 +13,8 @@ namespace DomainTests
         {
 
             // Arrange
-            var repository = new Mock<IRepository<ItemModel>>();
-            repository.Setup(a => a.Add(It.IsAny<ItemModel>())).Returns(Task.FromResult(1));
+            var repository = new Mock<IRepository<Item>>();
+            repository.Setup(a => a.Add(It.IsAny<Item>())).Returns(Task.FromResult(1));
 
             ItemActions actions = new(repository.Object);
 
@@ -39,7 +39,7 @@ namespace DomainTests
         public void DeleteItem_WhenModelIsOk_ReturnsTrue()
         {
             // Arrange
-            var repository = new Mock<IRepository<ItemModel>>();
+            var repository = new Mock<IRepository<Item>>();
             repository.Setup(a => a.Delete(It.IsAny<int>())).Returns(Task.FromResult(true));
 
             ItemActions actions = new(repository.Object);
@@ -60,7 +60,7 @@ namespace DomainTests
         public void DeleteCategory_WhenModelIsNotOk_ReturnsFalse()
         {
             // Arrange
-            var repository = new Mock<IRepository<ItemModel>>();
+            var repository = new Mock<IRepository<Item>>();
             repository.Setup(a => a.Delete(It.IsAny<int>())).Returns(Task.FromResult(false));
 
             ItemActions actions = new(repository.Object);
@@ -87,8 +87,8 @@ namespace DomainTests
         public void UpdateCategory_WhenModelIsOk_ReturnsTrue()
         {
             // Arrange
-            var repository = new Mock<IRepository<ItemModel>>();
-            repository.Setup(a => a.Update(It.IsAny<ItemModel>())).Returns(Task.FromResult(true));
+            var repository = new Mock<IRepository<Item>>();
+            repository.Setup(a => a.Update(It.IsAny<Item>())).Returns(Task.FromResult(true));
 
             ItemActions actions = new(repository.Object);
 
@@ -114,7 +114,7 @@ namespace DomainTests
         public void GetById_WhenModelIsOk_ReturnsCategoryModel()
         {
             // Arrange
-            ItemModel itemModel = new()
+            Item item = new()
             {
                 Id = 1,
                 Name = "Item Name",
@@ -136,8 +136,8 @@ namespace DomainTests
                 Price = 10,
             }; ;
 
-            var repository = new Mock<IRepository<ItemModel>>();
-            repository.Setup(a => a.GetById(It.IsAny<int>())).Returns(Task.FromResult(itemModel));
+            var repository = new Mock<IRepository<Item>>();
+            repository.Setup(a => a.GetById(It.IsAny<int>())).Returns(Task.FromResult(item));
 
             ItemActions actions = new(repository.Object);
 
@@ -152,9 +152,9 @@ namespace DomainTests
         public void GetAll_WhenModelIsOk_ReturnsListCategoryModel()
         {
             // Arrange
-            List<ItemModel> itemModels = new()
+            List<Item> items = new()
             {
-                new ItemModel {
+                new() {
                     Id = 1,
                     Name = "Item Name 1",
                     Description = "Description 1",
@@ -163,7 +163,7 @@ namespace DomainTests
                     Amount = 1,
                     Price = 10,
                 },
-                new ItemModel {
+                new() {
                     Id = 2,
                     Name = "Item Name 2",
                     Description = "Description 2",
@@ -176,7 +176,7 @@ namespace DomainTests
 
             List<Item> expectrdItems = new()
             {
-                new Item {
+                new() {
                     Id = 1,
                     Name = "Item Name 1",
                     Description = "Description 1",
@@ -185,7 +185,7 @@ namespace DomainTests
                     Amount = 1,
                     Price = 10,
                 },
-                new Item {
+                new() {
                     Id = 2,
                     Name = "Item Name 2",
                     Description = "Description 2",
@@ -196,8 +196,8 @@ namespace DomainTests
                 }
             };
 
-            var repository = new Mock<IRepository<ItemModel>>();
-            repository.Setup(a => a.GetAll()).Returns(Task.FromResult(itemModels));
+            var repository = new Mock<IRepository<Item>>();
+            repository.Setup(a => a.GetAll()).Returns(Task.FromResult(items));
 
             ItemActions actions = new(repository.Object);
 

@@ -1,9 +1,11 @@
-﻿using Infrastructure.Interfaces;
-using Infrastructure.Models;
+﻿using Domain.Interfaces;
+using Domain.Models;
+using Domain.Entities;
+using Domain.Mappers;
 
 namespace Infrastructure.Repositories
 {
-    public class CategoryRepository : IRepository<CategoryModel>
+    public class CategoryRepository : IRepository<Category>
     {
         private readonly InfrastructureContext _context;
 
@@ -12,10 +14,14 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
-        public Task<int> Add(CategoryModel item)
+        public Task<int> Add(Category item)
         {
-            _context.Categories.Add(item);
+            var model = EntityModelMappers.CategoryToModelMapper().Map<CategoryModel>(item);
+
+            _context.Categories.Add(model);
             _context.SaveChanges();
+
+            item.Id = model.Id;
             return Task.FromResult(item.Id);
         }
 
@@ -31,21 +37,27 @@ namespace Infrastructure.Repositories
             return Task.FromResult(false);
         }
 
-        public Task<List<CategoryModel>> GetAll()
+        public Task<List<Category>> GetAll()
         {
             var result = _context.Categories.ToList();
-            return Task.FromResult(result);
+            return Task.FromResult(EntityModelMappers.ModelToCategoryMapper().Map<List<Category>>(result));
         }
 
-        public Task<CategoryModel?> GetById(int id)
+        public Task<Category?> GetById(int id)
         {
             var result = _context.Categories.Find(id);
-            return Task.FromResult(result);
+            return Task.FromResult(EntityModelMappers.ModelToCategoryMapper().Map<Category>(result));
         }
 
-        public Task<bool> Update(CategoryModel item)
+        public Task<bool> Update(Category item)
         {
-            _context.Categories.Update(item);
+            var model = _context.Categories.Find(item.Id);
+            
+            model.Name = item.Name;
+            model.ImageUrl = item.ImageUrl;
+            model.ParentCategoryId = item.ParentCategoryId;
+
+            _context.Categories.Update(model);
             _context.SaveChanges(false);
             return Task.FromResult(true);
         }

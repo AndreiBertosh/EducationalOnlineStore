@@ -1,8 +1,7 @@
 using Application;
+using Domain.Entities;
+using Domain.Models;
 using Infrastructure;
-using Infrastructure.Entities;
-using Infrastructure.Models;
-using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApplicationTests

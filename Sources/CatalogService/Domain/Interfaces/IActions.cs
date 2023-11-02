@@ -1,6 +1,4 @@
-﻿using Infrastructure.Interfaces;
-
-namespace Infrastructure.Interfaces
+﻿namespace Domain.Interfaces
 {
     public interface IActions<T>
         where T : IEntity

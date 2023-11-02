@@ -1,7 +1,7 @@
-﻿using Infrastructure.Interfaces;
+﻿using Domain.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
-namespace Infrastructure.Models
+namespace Domain.Models
 {
     public class ItemModel : IEntity
     {
