@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
-using Domain.Mappers;
 using Domain.Models;
 using Infrastructure;
+using Infrastructure.Mappers;
 using Infrastructure.Repositories;
 
 namespace InfrastructureTests

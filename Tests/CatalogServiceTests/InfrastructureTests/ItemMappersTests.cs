@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
-using Domain.Mappers;
 using Domain.Models;
+using Infrastructure.Mappers;
 
 namespace DomainTests
 {

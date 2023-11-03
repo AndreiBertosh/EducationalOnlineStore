@@ -1,8 +1,8 @@
-﻿using Infrastructure;
+﻿using Domain.Entities;
 using Domain.Models;
-using Domain.Entities;
+using Infrastructure;
+using Infrastructure.Mappers;
 using Infrastructure.Repositories;
-using Domain.Mappers;
 
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
 namespace InfrastructureTests

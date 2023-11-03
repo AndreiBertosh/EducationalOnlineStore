@@ -2,7 +2,7 @@
 using Domain.Entities;
 using Domain.Models;
 
-namespace Domain.Mappers
+namespace Infrastructure.Mappers
 {
     public static class EntityModelMappers
     {
