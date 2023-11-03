@@ -22,7 +22,7 @@ namespace CartingServiceBusinessLogic
             var item = new CartItem();
 
             _cartEntity = new CartEntity(databaseName, cartName);
-            _cartEntity.Actions.AddToChart(item);
+            _cartEntity.Actions.AddToCart(item);
         }
     }
 }

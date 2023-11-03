@@ -25,7 +25,7 @@ namespace CartingServiceBysinessLogicTests
             // Arrange
             var cartActions = new CartActions<CartItem>(_testDatabaseName, _testCollectionName);
 
-            var chartItem = new CartItem()
+            var cartItem = new CartItem()
             {
                 Name = "TestItem",
                 Price = 10,
@@ -33,19 +33,19 @@ namespace CartingServiceBysinessLogicTests
             };
 
             // Act
-            var id = cartActions.AddToChart(chartItem).Result;
+            var id = cartActions.AddToCart(cartItem).Result;
 
             // Assert
             Assert.True(id > 0);
         }
 
         [Fact]
-        public void RemoevFromChart_WhenEntitiIsCorrect_ReturnsTrue()
+        public void RemoevFromCart_WhenEntitiIsCorrect_ReturnsTrue()
         {
             // Arrange
             var cartActions = new CartActions<CartItem>(_testDatabaseName, _testCollectionName);
 
-            var chartItem = new CartItem()
+            var cartItem = new CartItem()
             {
                 Name = "TestItemToDelete",
                 Price = 10,
@@ -55,11 +55,11 @@ namespace CartingServiceBysinessLogicTests
             using (var database = new LiteDatabase(_testDatabaseName))
             {
                 var collection = database.GetCollection<CartItem>(_testCollectionName);
-                collection.Insert(chartItem);
+                collection.Insert(cartItem);
             }
 
             // Act
-            var result = cartActions.RemoevFromChart(chartItem).Result;
+            var result = cartActions.RemoevFromCart(cartItem).Result;
 
             // Assert
             Assert.True(result);
@@ -67,7 +67,7 @@ namespace CartingServiceBysinessLogicTests
             using (var database = new LiteDatabase(_testDatabaseName))
             {
                 var collection = database.GetCollection<CartItem>(_testCollectionName);
-                resultItem = collection.Find(e => e.Id == chartItem.Id).FirstOrDefault();
+                resultItem = collection.Find(e => e.Id == cartItem.Id).FirstOrDefault();
             }
             Assert.True(resultItem == null);
         }
@@ -122,7 +122,7 @@ namespace CartingServiceBysinessLogicTests
             };
 
             // Act
-            cart.Actions.AddToChart(existingCartItem);
+            cart.Actions.AddToCart(existingCartItem);
 
             // Assert
             var resultItem = cart.Items.Where(x => x.Id == existingCartItem.Id).FirstOrDefault();
@@ -164,7 +164,7 @@ namespace CartingServiceBysinessLogicTests
                     Quantity = 1
                 },
             };
-            existingCartItems.ForEach(item => cart.Actions.AddToChart(item));
+            existingCartItems.ForEach(item => cart.Actions.AddToCart(item));
 
             // Act
             var resultCartItems = cart.Items;
