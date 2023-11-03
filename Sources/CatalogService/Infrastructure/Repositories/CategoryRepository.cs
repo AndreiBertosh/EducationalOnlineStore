@@ -1,7 +1,7 @@
-﻿using Domain.Interfaces;
+using Domain.Interfaces;
 using Domain.Models;
 using Domain.Entities;
-using Infrastructure.Mappers;
+using Domain.Mappers;
 
 namespace Infrastructure.Repositories
 {

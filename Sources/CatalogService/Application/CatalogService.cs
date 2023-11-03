@@ -1,7 +1,6 @@
-﻿using Application.Actions;
+using Application.Actions;
 using Infrastructure;
 using Infrastructure.Repositories;
-using System.Configuration;
 
 namespace Application
 {
