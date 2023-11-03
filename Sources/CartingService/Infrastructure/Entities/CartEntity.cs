@@ -5,9 +5,9 @@ namespace CartingServiceBusinessLogic.Infrastructure.Entities
 {
     public class CartEntity
     {
-        private string _cartName;
-        private string _collectionName;
-        private string _databaseName;
+        private string _cartName = string.Empty;
+        private readonly string _collectionName;
+        private readonly string _databaseName;
         public CartActions<CartItem> Actions;
 
         public string CartName  
