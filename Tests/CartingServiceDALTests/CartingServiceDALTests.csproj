@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Sources\CartingServiceDAL\CartingServiceDAL.csproj" />
+    <ProjectReference Include="..\..\Sources\CartingService\CartingServiceDAL\CartingServiceDAL.csproj" />
   </ItemGroup>
 
 </Project>

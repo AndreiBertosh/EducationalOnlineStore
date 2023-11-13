@@ -6,10 +6,12 @@ namespace Application.Actions
     public class CategoryActions : IActions<Category>
     {
         private readonly IRepository<Category> _repository;
+        private readonly ItemActions _itemActions;
 
-        public CategoryActions(IRepository<Category> repository)
+        public CategoryActions(IRepository<Category> repository, ItemActions itemActions)
         {
             _repository = repository;
+            _itemActions = itemActions;
         }   
 
         public Task<int> Add(Category item)
@@ -19,6 +21,7 @@ namespace Application.Actions
 
         public Task<bool> Delete(int id)
         {
+            _itemActions.DeleteAllItemsForCategoryId(id);
             return Task.FromResult(_repository.Delete(id).Result);
         }
 

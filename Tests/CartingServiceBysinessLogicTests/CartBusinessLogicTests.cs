@@ -23,9 +23,9 @@ namespace CartingServiceBysinessLogicTests
         public void Add_WhenEntitiIsCorrect_ReturnsId()
         {
             // Arrange
-            var cartActions = new CartActions<CartItem>(_testDatabaseName, _testCollectionName);
+            var cartActions = new CartActions<CartEntity>(_testDatabaseName, _testCollectionName);
 
-            var cartItem = new CartItem()
+            var cartEntity = new CartEntity()
             {
                 Name = "TestItem",
                 Price = 10,
@@ -33,7 +33,7 @@ namespace CartingServiceBysinessLogicTests
             };
 
             // Act
-            var id = cartActions.AddToCart(cartItem).Result;
+            var id = cartActions.AddToCart(cartEntity).Result;
 
             // Assert
             Assert.True(id > 0);
@@ -43,9 +43,9 @@ namespace CartingServiceBysinessLogicTests
         public void RemoevFromCart_WhenEntitiIsCorrect_ReturnsTrue()
         {
             // Arrange
-            var cartActions = new CartActions<CartItem>(_testDatabaseName, _testCollectionName);
+            var cartActions = new CartActions<CartEntity>(_testDatabaseName, _testCollectionName);
 
-            var cartItem = new CartItem()
+            var cartEntity = new CartEntity()
             {
                 Name = "TestItemToDelete",
                 Price = 10,
@@ -54,20 +54,20 @@ namespace CartingServiceBysinessLogicTests
 
             using (var database = new LiteDatabase(_testDatabaseName))
             {
-                var collection = database.GetCollection<CartItem>(_testCollectionName);
-                collection.Insert(cartItem);
+                var collection = database.GetCollection<CartEntity>(_testCollectionName);
+                collection.Insert(cartEntity);
             }
 
             // Act
-            var result = cartActions.RemoevFromCart(cartItem).Result;
+            var result = cartActions.RemoevFromCart(cartEntity).Result;
 
             // Assert
             Assert.True(result);
-            var resultItem = new CartItem();
+            var resultItem = new CartEntity();
             using (var database = new LiteDatabase(_testDatabaseName))
             {
-                var collection = database.GetCollection<CartItem>(_testCollectionName);
-                resultItem = collection.Find(e => e.Id == cartItem.Id).FirstOrDefault();
+                var collection = database.GetCollection<CartEntity>(_testCollectionName);
+                resultItem = collection.Find(e => e.Id == cartEntity.Id).FirstOrDefault();
             }
             Assert.True(resultItem == null);
         }
@@ -76,17 +76,17 @@ namespace CartingServiceBysinessLogicTests
         public void GetListItems_WhenEntitiIsCorrect_ReturnsListItems()
         {
             // Arrange
-            var cartActions = new CartActions<CartItem>(_testDatabaseName, _testCollectionName);
+            var cartActions = new CartActions<CartEntity>(_testDatabaseName, _testCollectionName);
 
-            var expectedItems = new List<CartItem>
+            var expectedEntities = new List<CartEntity>
             {
-                new CartItem
+                new ()
                 {
                     Name = "TestItemOne",
                     Price = 10,
                     Quantity = 1
                 },
-                new CartItem
+                new ()
                 {
                     Name = "TestItemTwo",
                     Price = 20,
@@ -96,8 +96,8 @@ namespace CartingServiceBysinessLogicTests
 
             using (var database = new LiteDatabase(_testDatabaseName))
             {
-                var collection = database.GetCollection<CartItem>(_testCollectionName);
-                collection.Insert(expectedItems);
+                var collection = database.GetCollection<CartEntity>(_testCollectionName);
+                collection.Insert(expectedEntities);
             }
 
             // Act
@@ -105,72 +105,7 @@ namespace CartingServiceBysinessLogicTests
 
             // Assert
             Assert.True(result.Count == 2);
-            Assert.Equivalent(expectedItems, result);
-        }
-
-        [Fact]
-        public void AddItemToCart_WhenEntitiIsCorrect_ReturnsCartWithItems()
-        {
-            // Arrange
-            var cart = new CartEntity(_testDatabaseName, _testCollectionName);
-
-            var existingCartItem = new CartItem()
-            {
-                Name = "TestItem",
-                Price = 10,
-                Quantity = 1
-            };
-
-            // Act
-            cart.Actions.AddToCart(existingCartItem);
-
-            // Assert
-            var resultItem = cart.Items.Where(x => x.Id == existingCartItem.Id).FirstOrDefault();
-
-            Assert.Equivalent(resultItem, existingCartItem);
-        }
-
-        [Fact]
-        public void CartName_WhenCartInitialised_ReturnsCartName()
-        {
-            // Arrange
-            var cart = new CartEntity(_testDatabaseName, _testCollectionName);
-            cart.CartName = _testCollectionName;
-
-            // Act
-            var cartName = cart.CartName;
-
-            // Assert
-            Assert.Equivalent(cartName, _testCollectionName);
-        }
-
-        [Fact]
-        public void GetItems_WhenEntitiIsCorrect_ReturnsCartItems()
-        {
-            // Arrange
-            var cart = new CartEntity(_testDatabaseName, _testCollectionName);
-
-            var existingCartItems = new List<CartItem> {
-                new CartItem()
-                {
-                    Name = "TestItem",
-                    Price = 10,
-                    Quantity = 1
-                },
-                new CartItem()
-                {
-                    Name = "TestItem2",
-                    Price = 15,
-                    Quantity = 1
-                },
-            };
-            existingCartItems.ForEach(item => cart.Actions.AddToCart(item));
-
-            // Act
-            var resultCartItems = cart.Items;
-
-            // Assert
-            Assert.Equivalent(resultCartItems, existingCartItems);
+            Assert.Equivalent(expectedEntities, result);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CartingService;
+using CartingServiceBusinessLogic;
 using CartingServiceBusinessLogic.Infrastructure.Entities;
 using CartingServiceDAL.Entities;
 using LiteDB;
@@ -28,9 +29,9 @@ namespace CartingServiceBysinessLogicTests
         public void AddItemToCart_WhenEntitiIsCorrect_ReturnsCartWithItems()
         {
             // Arrange
-            var cart = new CartEntity(_testDatabaseName, _testCartName);
+            var cart = new CartService(_testDatabaseName, _testCartName);
 
-            var existingCartItem = new CartItem()
+            var existingCartItem = new CartEntity()
             {
                 Name = "TestItem",
                 Price = 10,
@@ -38,52 +39,38 @@ namespace CartingServiceBysinessLogicTests
             };
 
             // Act
-            cart.Actions.AddToCart(existingCartItem);
+            cart.CartActions.AddToCart(existingCartItem);
 
             // Assert
-            var resultItem = cart.Items.Where(x => x.Id == existingCartItem.Id).FirstOrDefault();
+            var resultItem = cart.CartActions.GetListItems().Result.Where(x => x.Id == existingCartItem.Id).FirstOrDefault();
 
             Assert.Equivalent(resultItem, existingCartItem);
-        }
-
-        [Fact]
-        public void CartName_WhenCartInitialised_ReturnsCartName()
-        {
-            // Arrange
-            var cart = new CartEntity(_testDatabaseName, _testCartName);
-            cart.CartName = _testCartName;
-
-            // Act
-            var cartName = cart.CartName;
-
-            // Assert
-            Assert.Equivalent(cartName, _testCartName);
         }
 
         [Fact]
         public void GetItems_WhenEntitiIsCorrect_ReturnsCartItems()
         {
             // Arrange
-            var cart = new CartEntity(_testDatabaseName, _testCartName);
+            var cart = new CartService(_testDatabaseName, _testCartName);
 
-            var existingCartItems = new List<CartItem> {
-                new CartItem()
+            var existingCartItems = new List<CartEntity> {
+                new ()
                 {
                     Name = "TestItem",
                     Price = 10,
                     Quantity = 1
                 },
-                new CartItem()
+                new ()
                 {
                     Name = "TestItem2",
                     Price = 15,
                     Quantity = 1
                 },
             };
-            existingCartItems.ForEach(item => cart.Actions.AddToCart(item));
+            existingCartItems.ForEach(item => cart.CartActions.AddToCart(item));
 
             // Act
-            var resultCartItems = cart.Items;
+            var resultCartItems = cart.CartActions.GetListItems().Result;
 
             // Assert
             Assert.Equivalent(resultCartItems, existingCartItems);

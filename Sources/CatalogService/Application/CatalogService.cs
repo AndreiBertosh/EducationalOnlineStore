@@ -21,7 +21,7 @@ namespace Application
 
             if (string.IsNullOrEmpty(connection))
             {
-                connectionString = ConfigurationManager.AppSettings["connectionstring"];
+                connectionString = ConfigurationManager.ConnectionStrings["CatalogService"].ConnectionString;
             }
             else 
             {
@@ -33,10 +33,10 @@ namespace Application
                 Connection = connectionString
             };
 
-            _categoryRepository = new(_context);
             _itemRepository = new(_context);
-            _categoryActions = new(_categoryRepository);
+            _categoryRepository = new(_context);
             _itemActions = new(_itemRepository);
+            _categoryActions = new(_categoryRepository, _itemActions);
         }
 
         public CategoryActions CategoryActions 

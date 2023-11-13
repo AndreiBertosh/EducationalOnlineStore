@@ -36,5 +36,24 @@ namespace Application.Actions
         {
             return Task.FromResult(_repository.Update(item).Result);
         }
+
+        public Task<bool> DeleteAllItemsForCategoryId(int categoryId)
+        {
+            var items = GetAllItemsForCategoryId(categoryId).Result;
+            items.ForEach(item => _repository.Delete(item.Id));
+
+            return Task.FromResult(true);
+        }
+
+        public Task<List<Item>> GetAllItemsForCategoryId(int categoryId)
+        {
+            return Task.FromResult(_repository.GetAll().Result.Where(item => item.CategoryId == categoryId).ToList());
+        }
+
+        public Task<List<Item>> GetItems(int skipItems, int count)
+        {
+            var items = _repository.GetAll().Result;
+            return Task.FromResult(items.Skip(skipItems).Take(count).ToList());
+        }
     }
 }

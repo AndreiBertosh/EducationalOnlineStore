@@ -1,4 +1,5 @@
-﻿using CartingServiceDAL.Entities;
+﻿using CartingServiceBusinessLogic.Infrastructure.Entities;
+using CartingServiceDAL.Entities;
 using CartingServiceDAL.Infrastructure.Interfaces;
 
 namespace CartingServiceBusinessLogic.Infrastructure.Interfaces
