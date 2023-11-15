@@ -31,7 +31,7 @@ namespace CartingServiceBysinessLogicTests
             // Arrange
             var cart = new CartService(_testDatabaseName, _testCartName);
 
-            var existingCartItem = new CartEntity()
+            var existingCartEntity = new CartEntity()
             {
                 Name = "TestItem",
                 Price = 10,
@@ -39,12 +39,13 @@ namespace CartingServiceBysinessLogicTests
             };
 
             // Act
-            cart.CartActions.AddToCart(existingCartItem);
+            int id = cart.CartActions.AddToCart(existingCartEntity).Result;
 
             // Assert
-            var resultItem = cart.CartActions.GetListItems().Result.Where(x => x.Id == existingCartItem.Id).FirstOrDefault();
+            var resultItem = cart.CartActions.GetListItems().Result.FirstOrDefault(x => x.Id == id);
+            existingCartEntity.Id = id;
 
-            Assert.Equivalent(resultItem, existingCartItem);
+            Assert.Equivalent(resultItem, existingCartEntity);
         }
 
         [Fact]
@@ -53,7 +54,7 @@ namespace CartingServiceBysinessLogicTests
             // Arrange
             var cart = new CartService(_testDatabaseName, _testCartName);
 
-            var existingCartItems = new List<CartEntity> {
+            var existingCartEntities = new List<CartEntity> {
                 new ()
                 {
                     Name = "TestItem",
@@ -67,13 +68,13 @@ namespace CartingServiceBysinessLogicTests
                     Quantity = 1
                 },
             };
-            existingCartItems.ForEach(item => cart.CartActions.AddToCart(item));
+            existingCartEntities.ForEach(item => item.Id = cart.CartActions.AddToCart(item).Result);
 
             // Act
-            var resultCartItems = cart.CartActions.GetListItems().Result;
+            var resultCartEntities = cart.CartActions.GetListItems().Result;
 
             // Assert
-            Assert.Equivalent(resultCartItems, existingCartItems);
+            Assert.Equivalent(resultCartEntities, existingCartEntities);
         }
     }
 }

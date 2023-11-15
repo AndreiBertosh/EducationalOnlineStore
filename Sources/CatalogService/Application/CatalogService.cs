@@ -1,11 +1,13 @@
 using Application.Actions;
+using Domain.Entities;
+using Domain.Interfaces;
 using Infrastructure;
 using Infrastructure.Repositories;
 using System.Configuration;
 
 namespace Application
 {
-    public class CatalogService
+    public class CatalogService : ICatalogService
     {
         private InfrastructureContext _context;
 
@@ -39,7 +41,7 @@ namespace Application
             _categoryActions = new(_categoryRepository, _itemActions);
         }
 
-        public CategoryActions CategoryActions 
+        public IActions<Category> CategoryActions
         { 
             get 
             { 
@@ -47,7 +49,7 @@ namespace Application
             } 
         }
 
-        public ItemActions ItemActions 
+        public IActionsItem<Item> ItemActions 
         { 
             get
             {

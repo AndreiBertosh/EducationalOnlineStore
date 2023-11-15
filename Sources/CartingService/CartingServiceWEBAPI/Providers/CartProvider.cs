@@ -1,4 +1,5 @@
 ﻿using CartingServiceBusinessLogic;
+using CartingServiceBusinessLogic.Infrastructure.Interfaces;
 using CartingServiceBusinessLogic.Infrastructure.Settings;
 using CartingServiceWEBAPI.Interfaces;
 
@@ -12,6 +13,6 @@ namespace CartingServiceWEBAPI.Providers
         {
             _databaseSettings = settings.DatabaseSettings;
         }
-        public Cart Cart => new Cart(_databaseSettings.CartName, _databaseSettings.DatabaseName, _databaseSettings.CollectionName);
+        public ICart Cart => new Cart(_databaseSettings.CartName, _databaseSettings.DatabaseName, _databaseSettings.CollectionName);
     }
 }

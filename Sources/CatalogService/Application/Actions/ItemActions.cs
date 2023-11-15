@@ -3,7 +3,7 @@ using Domain.Interfaces;
 
 namespace Application.Actions
 {
-    public class ItemActions : IActions<Item>
+    public class ItemActions : IActionsItem<Item>
     {
         private readonly IRepository<Item> _repository;
 

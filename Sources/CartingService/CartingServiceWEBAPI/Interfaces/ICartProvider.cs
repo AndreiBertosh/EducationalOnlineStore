@@ -1,9 +1,10 @@
 ﻿using CartingServiceBusinessLogic;
+using CartingServiceBusinessLogic.Infrastructure.Interfaces;
 
 namespace CartingServiceWEBAPI.Interfaces
 {
     public interface ICartProvider
     {
-        public Cart Cart { get; }
+        public ICart Cart { get; }
     }
 }
