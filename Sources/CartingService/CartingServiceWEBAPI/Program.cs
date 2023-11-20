@@ -41,7 +41,7 @@ namespace CartingServiceWEBAPI
                 // does not provide an API version.
                 options.AssumeDefaultVersionWhenUnspecified = true;
                 options.ReportApiVersions = true;
-                options.DefaultApiVersion = new ApiVersion(2.0);
+                options.DefaultApiVersion = new ApiVersion(1.0);
             });
 
             builder.Services.AddControllers();

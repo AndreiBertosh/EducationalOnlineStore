@@ -22,4 +22,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Sources\CatalogService\Application\Application.csproj" />
+    <ProjectReference Include="..\..\..\Sources\CatalogService\Domain\Domain.csproj" />
+  </ItemGroup>
+
 </Project>

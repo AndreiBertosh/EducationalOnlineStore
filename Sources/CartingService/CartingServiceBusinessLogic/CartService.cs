@@ -1,6 +1,7 @@
 ﻿using CartingService;
 using CartingServiceBusinessLogic.Infrastructure.Entities;
 using CartingServiceDAL.Entities;
+using CartEntity = CartingServiceBusinessLogic.Infrastructure.Entities.CartEntity;
 
 namespace CartingServiceBusinessLogic
 {
