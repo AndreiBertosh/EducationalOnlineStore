@@ -15,7 +15,7 @@ namespace Application
         private ItemRepository _itemRepository;
 
         private CategoryActions _categoryActions;
-        private ItemActions _itemActions;
+        private IActionsItem<Item> _itemActions;
 
         public CatalogService(string? connection) 
         {
@@ -37,7 +37,7 @@ namespace Application
 
             _itemRepository = new(_context);
             _categoryRepository = new(_context);
-            _itemActions = new(_itemRepository);
+            _itemActions = new ItemActions(_itemRepository);
             _categoryActions = new(_categoryRepository, _itemActions);
         }
 

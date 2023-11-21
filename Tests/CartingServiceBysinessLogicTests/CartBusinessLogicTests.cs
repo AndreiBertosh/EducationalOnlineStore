@@ -14,7 +14,7 @@ namespace CartingServiceBysinessLogicTests
         {
             using (var database = new LiteDatabase(_testDatabaseName))
             {
-                var collection = database.GetCollection<CartItem>(_testCollectionName);
+                var collection = database.GetCollection<CartItemModel>(_testCollectionName);
                 collection.DeleteAll();
             }
         }
@@ -23,9 +23,9 @@ namespace CartingServiceBysinessLogicTests
         public void Add_WhenEntitiIsCorrect_ReturnsId()
         {
             // Arrange
-            var cartActions = new CartActions<CartEntity>(_testDatabaseName, _testCollectionName);
+            var cartActions = new CartActions<CartItem>(_testDatabaseName, _testCollectionName);
 
-            var cartEntity = new CartEntity()
+            var cartEntity = new CartItem()
             {
                 Name = "TestItem",
                 Price = 10,
@@ -43,9 +43,9 @@ namespace CartingServiceBysinessLogicTests
         public void RemoevFromCart_WhenEntitiIsCorrect_ReturnsTrue()
         {
             // Arrange
-            var cartActions = new CartActions<CartEntity>(_testDatabaseName, _testCollectionName);
+            var cartActions = new CartActions<CartItem>(_testDatabaseName, _testCollectionName);
 
-            var cartEntity = new CartEntity()
+            var cartEntity = new CartItem()
             {
                 Name = "TestItemToDelete",
                 Price = 10,
@@ -54,7 +54,7 @@ namespace CartingServiceBysinessLogicTests
 
             using (var database = new LiteDatabase(_testDatabaseName))
             {
-                var collection = database.GetCollection<CartEntity>(_testCollectionName);
+                var collection = database.GetCollection<CartItem>(_testCollectionName);
                 collection.Insert(cartEntity);
             }
 
@@ -63,10 +63,10 @@ namespace CartingServiceBysinessLogicTests
 
             // Assert
             Assert.True(result);
-            var resultItem = new CartEntity();
+            var resultItem = new CartItem();
             using (var database = new LiteDatabase(_testDatabaseName))
             {
-                var collection = database.GetCollection<CartEntity>(_testCollectionName);
+                var collection = database.GetCollection<CartItem>(_testCollectionName);
                 resultItem = collection.Find(e => e.Id == cartEntity.Id).FirstOrDefault();
             }
             Assert.True(resultItem == null);
@@ -76,9 +76,9 @@ namespace CartingServiceBysinessLogicTests
         public void GetListItems_WhenEntitiIsCorrect_ReturnsListItems()
         {
             // Arrange
-            var cartActions = new CartActions<CartEntity>(_testDatabaseName, _testCollectionName);
+            var cartActions = new CartActions<CartItem>(_testDatabaseName, _testCollectionName);
 
-            var expectedEntities = new List<CartEntity>
+            var expectedEntities = new List<CartItem>
             {
                 new ()
                 {
@@ -96,7 +96,7 @@ namespace CartingServiceBysinessLogicTests
 
             using (var database = new LiteDatabase(_testDatabaseName))
             {
-                var collection = database.GetCollection<CartEntity>(_testCollectionName);
+                var collection = database.GetCollection<CartItem>(_testCollectionName);
                 collection.Insert(expectedEntities);
             }
 

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CartingServiceDAL.Infrastructure.Interfaces;
 
 namespace CartingServiceDAL.Entities
 {
-    public class CartField
+    public class CartItemModel : IEntity
     {
         public int Id { get; set; }
 

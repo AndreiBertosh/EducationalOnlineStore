@@ -11,10 +11,10 @@ namespace CartingServiceBusinessLogic.Infrastructure.Interfaces
     {
         public string CartName { get; set; }
 
-        public List<CartEntity> Items { get; }
+        public List<CartItem> Items { get; }
 
-        public int AddToItems(CartEntity entity);
+        public int AddToItems(CartItem entity);
 
-        public bool RemoveItem(CartEntity entity);
+        public bool RemoveItem(CartItem entity);
     }
 }

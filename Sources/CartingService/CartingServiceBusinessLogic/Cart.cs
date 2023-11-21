@@ -7,12 +7,12 @@ namespace CartingServiceBusinessLogic
     public class Cart : ICart
     {
         private string _cartName = string.Empty;
-        private readonly CartActions<CartEntity> _cartService;
+        private readonly CartActions<CartItem> _cartService;
         //private readonly CartService _cartService;
 
         public Cart(string cartName, string databaseName, string collectionName)
         {
-            _cartService = new CartActions<CartEntity>(databaseName, collectionName);
+            _cartService = new CartActions<CartItem>(databaseName, collectionName);
             //_cartService = new CartService(databaseName, collectionName);
             CartName = cartName;
         }
@@ -29,7 +29,7 @@ namespace CartingServiceBusinessLogic
             }
         }
 
-        public List<CartEntity> Items
+        public List<CartItem> Items
         {
             get
             {
@@ -38,13 +38,13 @@ namespace CartingServiceBusinessLogic
             }
         }
 
-        public int AddToItems(CartEntity entity)
+        public int AddToItems(CartItem entity)
         {
             //return _cartService.CartActions.AddToCart(entity).Result;
             return _cartService.AddToCart(entity).Result;
         }
 
-        public bool RemoveItem(CartEntity entity)
+        public bool RemoveItem(CartItem entity)
         {
             //return _cartService.CartActions.RemoevFromCart(entity).Result;
             return _cartService.RemoevFromCart(entity).Result;

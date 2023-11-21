@@ -38,7 +38,7 @@ namespace CartingServiceWEBAPI.Controllers.V1
         /// <param name="value"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult Add([FromBody] CartEntity value)
+        public ActionResult Add([FromBody] CartItem value)
         {
             var result = _cart.AddToItems(value);
             if (result > 0)

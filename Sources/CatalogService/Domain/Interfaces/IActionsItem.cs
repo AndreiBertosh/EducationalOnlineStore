@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Entities;
 
 namespace Domain.Interfaces
 {
     public interface IActionsItem<T> : IActions<T>
         where T : IEntity
     {
-        public Task<bool> DeleteAllItemsForCategoryId(int categoryId);
+        Task<bool> DeleteAllItemsForCategoryId(int categoryId);
+
+        Task<List<Item>> GetAllItemsForCategoryId(int categoryId);
+
+        Task<List<Item>> GetItems(int skipItems, int count);
     }
 }

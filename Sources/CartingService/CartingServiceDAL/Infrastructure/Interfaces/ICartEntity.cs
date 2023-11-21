@@ -6,6 +6,6 @@ namespace CartingServiceDAL.Infrastructure.Interfaces
     {
         string Name { get; set; }
 
-        List<CartItem> Entities { get; set; }
+        List<CartItemModel> Items { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using LiteDB;
 
 namespace CartingServiceDAL.Repository
 {
-    public class CartRepositoryFull : IRepository<CartEntity1>
+    public class CartRepositoryFull : IRepository<CartModel>
     {
         private readonly string _databaseName;
         private readonly string _collectionName;
@@ -15,58 +15,61 @@ namespace CartingServiceDAL.Repository
             _collectionName = colletion;
         }
 
-        public Task<int> Add(CartEntity1 item)
+        public Task<int> Add(CartModel item)
         {
             using (var database = new LiteDatabase(_databaseName))
             {
-                var collection = database.GetCollection<CartEntity1>(_collectionName);
-                collection.Insert(item);
+                var collection = database.GetCollection<CartModel>(_collectionName);
+                if (item.Id == 0)
+                {
+                    collection.Insert(item);
+                }
             }
 
             return Task.FromResult(item.Id);
         }
 
-        public Task<bool> Delete(CartEntity1 item)
+        public Task<bool> Delete(CartModel item)
         {
             using (var database = new LiteDatabase(_databaseName))
             {
-                var collection = database.GetCollection<CartEntity1>(_collectionName);
+                var collection = database.GetCollection<CartModel>(_collectionName);
                 collection.Delete(item.Id);
             }
 
             return Task.FromResult(true);
         }
 
-        public Task<List<CartEntity1>> GetAll()
+        public Task<List<CartModel>> GetAll()
         {
-            var result = new List<CartEntity1>();
+            var result = new List<CartModel>();
             using (var database = new LiteDatabase(_databaseName))
             {
-                var collection = database.GetCollection<CartEntity1>(_collectionName);
+                var collection = database.GetCollection<CartModel>(_collectionName);
                 result = collection.FindAll().ToList();
             }
             return Task.FromResult(result);
         }
 
-        public Task<CartEntity1?> GetById(int id)
+        public Task<CartModel?> GetById(int id)
         {
             using (var database = new LiteDatabase(_databaseName))
             {
-                var collection = database.GetCollection<CartEntity1>(_collectionName);
+                var collection = database.GetCollection<CartModel>(_collectionName);
                 return Task.FromResult(collection.Find(e => e.Id == id).FirstOrDefault());
             }
         }
 
-        public Task<CartEntity1> Update(CartEntity1 item)
+        public Task<CartModel> Update(CartModel item)
         {
             using (var database = new LiteDatabase(_databaseName))
             {
-                var collection = database.GetCollection<CartEntity1>(_collectionName);
+                var collection = database.GetCollection<CartModel>(_collectionName);
                 if (item.Id > 0)
                 {
-                    var cart = collection.Find(c => c.Id == item.Id).FirstOrDefault();
-                    cart.Entities = cart.Entities.Union(item.Entities).ToList();
-                    collection.Update(cart);
+                    var cartCollection = collection.Find(c => c.Id == item.Id).FirstOrDefault();
+                    cartCollection.Items = cartCollection.Items.Union(item.Items).ToList();
+                    collection.Update(cartCollection);
                 }
                 else
                 {

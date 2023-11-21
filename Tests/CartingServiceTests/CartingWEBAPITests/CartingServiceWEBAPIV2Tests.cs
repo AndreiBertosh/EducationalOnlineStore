@@ -11,7 +11,7 @@ namespace CartingWEBAPITests
 {
     public class CartingServiceWEBAPIV2Tests
     {
-        private readonly Mock<ICartActions<CartEntity>> _mockService;
+        private readonly Mock<ICartActions<CartItem>> _mockService;
         private CartingServiceController _cartingServiceControllerV2;
         private readonly Mock<ILogger<CartingServiceController>> _logger;
         private readonly Mock<ICartProvider> _provider;
@@ -20,14 +20,14 @@ namespace CartingWEBAPITests
         { 
             _logger = new Mock<ILogger<CartingServiceController>>();
             _provider = new Mock<ICartProvider>();
-            _mockService = new Mock<ICartActions<CartEntity>>();
+            _mockService = new Mock<ICartActions<CartItem>>();
         }
 
         [Fact]
         public async Task GetCart_ReturnsOkResult()
         {
             // Arrange
-            CartEntity cartEntity = new()
+            CartItem cartEntity = new()
             {
                 Id = 5,
                 Name = "Entity Name",
@@ -36,7 +36,7 @@ namespace CartingWEBAPITests
                 Quantity = 10
             };
 
-            var returnList = new List<CartEntity> { cartEntity };
+            var returnList = new List<CartItem> { cartEntity };
 
             Mock<ICart> cart = new Mock<ICart>();
             cart.Setup(c => c.CartName).Returns("Cart name");

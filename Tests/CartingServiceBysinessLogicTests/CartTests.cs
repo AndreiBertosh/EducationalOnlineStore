@@ -20,7 +20,7 @@ namespace CartingServiceBysinessLogicTests
         {
             using (var database = new LiteDatabase(_testDatabaseName))
             {
-                var collection = database.GetCollection<CartItem>(_testCartName);
+                var collection = database.GetCollection<CartItemModel>(_testCartName);
                 collection.DeleteAll();
             }
         }
@@ -31,7 +31,7 @@ namespace CartingServiceBysinessLogicTests
             // Arrange
             var cart = new CartService(_testDatabaseName, _testCartName);
 
-            var existingCartEntity = new CartEntity()
+            var existingCartEntity = new CartItem()
             {
                 Name = "TestItem",
                 Price = 10,
@@ -54,7 +54,7 @@ namespace CartingServiceBysinessLogicTests
             // Arrange
             var cart = new CartService(_testDatabaseName, _testCartName);
 
-            var existingCartEntities = new List<CartEntity> {
+            var existingCartEntities = new List<CartItem> {
                 new ()
                 {
                     Name = "TestItem",

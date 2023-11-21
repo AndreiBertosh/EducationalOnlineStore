@@ -1,19 +1,19 @@
 ﻿using CartingService;
 using CartingServiceBusinessLogic.Infrastructure.Entities;
 using CartingServiceDAL.Entities;
-using CartEntity = CartingServiceBusinessLogic.Infrastructure.Entities.CartEntity;
+using CartItem = CartingServiceBusinessLogic.Infrastructure.Entities.CartItem;
 
 namespace CartingServiceBusinessLogic
 {
     public class CartService
     {
-        public CartEntity _cartEntity;
+        public CartItem _cartEntity;
 
-        public CartActions<CartEntity> CartActions;
+        public CartActions<CartItem> CartActions;
 
         public CartService(string databaseName, string cartName)
         {
-            this.CartActions = new CartActions<CartEntity>(databaseName, cartName);
+            this.CartActions = new CartActions<CartItem>(databaseName, cartName);
         }
     }
 }

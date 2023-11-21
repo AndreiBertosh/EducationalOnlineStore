@@ -6,9 +6,9 @@ namespace Application.Actions
     public class CategoryActions : IActions<Category>
     {
         private readonly IRepository<Category> _repository;
-        private readonly ItemActions _itemActions;
+        private readonly IActionsItem<Item> _itemActions;
 
-        public CategoryActions(IRepository<Category> repository, ItemActions itemActions)
+        public CategoryActions(IRepository<Category> repository, IActionsItem<Item> itemActions)
         {
             _repository = repository;
             _itemActions = itemActions;

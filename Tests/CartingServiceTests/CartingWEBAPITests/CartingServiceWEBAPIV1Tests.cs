@@ -17,7 +17,7 @@ namespace CartingWEBAPITests
 {
     public class CartingServiceWEBAPIV1Tests
     {
-        private readonly Mock<ICartActions<CartEntity>> _mockService;
+        private readonly Mock<ICartActions<CartItem>> _mockService;
         private CartingServiceController _cartingServiceControllerV1;
         private readonly Mock<ILogger<CartingServiceController>> _logger;
         private readonly Mock<ICartProvider> _provider;
@@ -26,14 +26,14 @@ namespace CartingWEBAPITests
         { 
             _logger = new Mock<ILogger<CartingServiceController>>();
             _provider = new Mock<ICartProvider>();
-            _mockService = new Mock<ICartActions<CartEntity>>();
+            _mockService = new Mock<ICartActions<CartItem>>();
         }
 
         [Fact]
         public async Task GetCart_ReturnsOkResult()
         {
             // Arrange
-            CartEntity cartEntity = new()
+            CartItem cartEntity = new()
             {
                 Id = 1,
                 Name = "Entity Name",
@@ -43,7 +43,7 @@ namespace CartingWEBAPITests
             };
             Mock<ICart> cart = new Mock<ICart>();
             cart.Setup(c => c.CartName).Returns("Cart name");
-            cart.Setup(c => c.Items).Returns(new List<CartEntity> { cartEntity });
+            cart.Setup(c => c.Items).Returns(new List<CartItem> { cartEntity });
 
             _provider.Setup(p => p.Cart).Returns(cart.Object);
             _cartingServiceControllerV1 = new CartingServiceController(_logger.Object, _provider.Object);
@@ -62,7 +62,7 @@ namespace CartingWEBAPITests
         public async Task Add_ReturnsOkResult()
         {
             // Arrange
-            CartEntity cartEntity = new()
+            CartItem cartEntity = new()
             {
                 Id = 1,
                 Name = "Entity Name",
@@ -71,12 +71,12 @@ namespace CartingWEBAPITests
                 Quantity = 10
             };
 
-            var returnList = new List<CartEntity> { cartEntity };
+            var returnList = new List<CartItem> { cartEntity };
 
             Mock<ICart> cart = new Mock<ICart>();
             cart.Setup(c => c.CartName).Returns("Cart name");
             cart.Setup(c => c.Items).Returns(returnList);
-            cart.Setup(c => c.AddToItems(It.IsAny<CartEntity>())).Returns(1);
+            cart.Setup(c => c.AddToItems(It.IsAny<CartItem>())).Returns(1);
 
             _provider.Setup(p => p.Cart).Returns(cart.Object);
             _cartingServiceControllerV1 = new CartingServiceController(_logger.Object, _provider.Object);
@@ -95,16 +95,16 @@ namespace CartingWEBAPITests
         public async Task Add_ReturnsBadRequestResult()
         {
             // Arrange
-            CartEntity cartEntity = new()
+            CartItem cartEntity = new()
             {
             };
 
-            var returnList = new List<CartEntity> { cartEntity };
+            var returnList = new List<CartItem> { cartEntity };
 
             Mock<ICart> cart = new Mock<ICart>();
             cart.Setup(c => c.CartName).Returns("Cart name");
             cart.Setup(c => c.Items).Returns(returnList);
-            cart.Setup(c => c.AddToItems(It.IsAny<CartEntity>())).Returns(0);
+            cart.Setup(c => c.AddToItems(It.IsAny<CartItem>())).Returns(0);
 
             _provider.Setup(p => p.Cart).Returns(cart.Object);
             _cartingServiceControllerV1 = new CartingServiceController(_logger.Object, _provider.Object);
@@ -123,7 +123,7 @@ namespace CartingWEBAPITests
         public async Task Delete_ReturnsOkResult()
         {
             // Arrange
-            CartEntity cartEntity = new()
+            CartItem cartEntity = new()
             {
                 Id = 1,
                 Name = "Entity Name",
@@ -132,12 +132,12 @@ namespace CartingWEBAPITests
                 Quantity = 10
             };
 
-            var returnList = new List<CartEntity> { cartEntity };
+            var returnList = new List<CartItem> { cartEntity };
 
             Mock<ICart> cart = new Mock<ICart>();
             cart.Setup(c => c.CartName).Returns("Cart name");
             cart.Setup(c => c.Items).Returns(returnList);
-            cart.Setup(c => c.RemoveItem(It.IsAny<CartEntity>())).Returns(true);
+            cart.Setup(c => c.RemoveItem(It.IsAny<CartItem>())).Returns(true);
 
             _provider.Setup(p => p.Cart).Returns(cart.Object);
             _cartingServiceControllerV1 = new CartingServiceController(_logger.Object, _provider.Object);
@@ -156,7 +156,7 @@ namespace CartingWEBAPITests
         public async Task Delete_ReturnsBadRequestResult()
         {
             // Arrange
-            CartEntity cartEntity = new()
+            CartItem cartEntity = new()
             {
                 Id = 5,
                 Name = "Entity Name",
@@ -165,12 +165,12 @@ namespace CartingWEBAPITests
                 Quantity = 10
             };
 
-            var returnList = new List<CartEntity> { cartEntity };
+            var returnList = new List<CartItem> { cartEntity };
 
             Mock<ICart> cart = new Mock<ICart>();
             cart.Setup(c => c.CartName).Returns("Cart name");
             cart.Setup(c => c.Items).Returns(returnList);
-            cart.Setup(c => c.RemoveItem(It.IsAny<CartEntity>())).Returns(false);
+            cart.Setup(c => c.RemoveItem(It.IsAny<CartItem>())).Returns(false);
 
             _provider.Setup(p => p.Cart).Returns(cart.Object);
             _cartingServiceControllerV1 = new CartingServiceController(_logger.Object, _provider.Object);
