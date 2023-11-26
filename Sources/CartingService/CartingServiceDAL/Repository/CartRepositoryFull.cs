@@ -4,7 +4,7 @@ using LiteDB;
 
 namespace CartingServiceDAL.Repository
 {
-    public class CartRepositoryFull : IRepository<CartModel>
+    public class CartRepositoryFull : IRepositoryFull<CartModel>
     {
         private readonly string _databaseName;
         private readonly string _collectionName;
@@ -29,24 +29,31 @@ namespace CartingServiceDAL.Repository
             return Task.FromResult(item.Id);
         }
 
-        public Task<bool> Delete(CartModel item)
+        public Task<bool> Delete(string cartName, int itemId)
         {
             using (var database = new LiteDatabase(_databaseName))
             {
                 var collection = database.GetCollection<CartModel>(_collectionName);
-                collection.Delete(item.Id);
+                var result = collection.Find(c => c.Name == cartName).FirstOrDefault();
+                if (result != null)
+                {
+                    result.Items.Remove(result.Items.FirstOrDefault(i => i.Id == itemId));
+                    collection.Update(result);
+
+                    return Task.FromResult(true);
+                }
             }
 
-            return Task.FromResult(true);
+            return Task.FromResult(false);
         }
 
-        public Task<List<CartModel>> GetAll()
+        public Task<CartModel?> GetAll(string cartName)
         {
-            var result = new List<CartModel>();
+            CartModel result = new();
             using (var database = new LiteDatabase(_databaseName))
             {
                 var collection = database.GetCollection<CartModel>(_collectionName);
-                result = collection.FindAll().ToList();
+                result = collection.Find(c => c.Name == cartName).FirstOrDefault();
             }
             return Task.FromResult(result);
         }
@@ -60,23 +67,55 @@ namespace CartingServiceDAL.Repository
             }
         }
 
-        public Task<CartModel> Update(CartModel item)
+        public Task<CartModel> Update(CartModel model)
         {
             using (var database = new LiteDatabase(_databaseName))
             {
                 var collection = database.GetCollection<CartModel>(_collectionName);
-                if (item.Id > 0)
+                var cart = collection.Find(c => c.Name == model.Name).FirstOrDefault();
+
+                if (cart != null)
                 {
-                    var cartCollection = collection.Find(c => c.Id == item.Id).FirstOrDefault();
-                    cartCollection.Items = cartCollection.Items.Union(item.Items).ToList();
-                    collection.Update(cartCollection);
+                    cart.Items = cart.Items.UnionBy(model.Items, c => c.Id).OrderBy(c => c.Id).ToList();
+                    collection.Update(cart);
                 }
                 else
                 {
-                    collection.Insert(item);
+                    collection.Insert(model);
                 }
             }
-            return Task.FromResult(item);
+            return Task.FromResult(model);
+        }
+
+        public Task<bool> ItemsUpdate(CartItemModel item)
+        {
+            using (var database = new LiteDatabase(_databaseName))
+            {
+                var collection = database.GetCollection<CartModel>(_collectionName);
+                var carts = collection.FindAll();
+                
+                foreach (var cart in carts) 
+                {
+                    if (cart.Items.Any(c => c.Id == item.Id))
+                    {
+                        var items = cart.Items
+                            .Where(c => c.Id == item.Id)
+                            .Select(c => new CartItemModel
+                            {
+                                Id = c.Id,
+                                Name = item.Name,
+                                ImageUrl = item.ImageUrl,
+                                Price = item.Price,
+                                Quantity = c.Quantity
+                            }).ToList();
+                        cart.Items.RemoveAll(c => c.Id == item.Id);
+                        cart.Items.AddRange(items);
+                        cart.Items = cart.Items.OrderBy(c => c.Id).ToList();
+                        collection.Update(cart);
+                    }
+                }
+                return Task.FromResult(true);
+            }
         }
     }
 }

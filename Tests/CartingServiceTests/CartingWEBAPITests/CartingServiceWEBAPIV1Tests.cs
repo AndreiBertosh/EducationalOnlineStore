@@ -1,23 +1,18 @@
 ﻿using CartingServiceBusinessLogic;
 using CartingServiceBusinessLogic.Infrastructure.Entities;
 using CartingServiceBusinessLogic.Infrastructure.Interfaces;
-using CartingServiceDAL.Infrastructure.Interfaces;
 using CartingServiceWEBAPI.Controllers.V1;
+using CartingServiceWEBAPI.Infrastructure.Requests;
 using CartingServiceWEBAPI.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CartingWEBAPITests
 {
     public class CartingServiceWEBAPIV1Tests
     {
-        private readonly Mock<ICartActions<CartItem>> _mockService;
+        private readonly Mock<ICartActionsNew<CartEntity>> _mockActions;
         private CartingServiceController _cartingServiceControllerV1;
         private readonly Mock<ILogger<CartingServiceController>> _logger;
         private readonly Mock<ICartProvider> _provider;
@@ -26,93 +21,118 @@ namespace CartingWEBAPITests
         { 
             _logger = new Mock<ILogger<CartingServiceController>>();
             _provider = new Mock<ICartProvider>();
-            _mockService = new Mock<ICartActions<CartItem>>();
+            _mockActions = new Mock<ICartActionsNew<CartEntity>>();
         }
 
         [Fact]
         public async Task GetCart_ReturnsOkResult()
         {
             // Arrange
-            CartItem cartEntity = new()
+            List<CartItem> cartItems = new()
+            {
+                new()
+                {
+                    Id = 1,
+                    Name = "Entity Name",
+                    Image = "url",
+                    Price = 10,
+                    Quantity = 10
+                }
+            };
+
+            CartEntity cartEntity = new()
             {
                 Id = 1,
-                Name = "Entity Name",
-                Image = "url",
-                Price = 10,
-                Quantity = 10
+                Name = "Cart name",
+                Items = cartItems
             };
-            Mock<ICart> cart = new Mock<ICart>();
-            cart.Setup(c => c.CartName).Returns("Cart name");
-            cart.Setup(c => c.Items).Returns(new List<CartItem> { cartEntity });
 
-            _provider.Setup(p => p.Cart).Returns(cart.Object);
+            _mockActions.Setup(c => c.GetCart(It.IsAny<string>())).Returns(Task.FromResult(cartEntity));
+
+            _provider.Setup(p => p.CartActions).Returns(_mockActions.Object);
             _cartingServiceControllerV1 = new CartingServiceController(_logger.Object, _provider.Object);
 
             // Act
-            var result = _cartingServiceControllerV1.GetCart();
+            var result = _cartingServiceControllerV1.GetCart("Cart name");
             var resultType = result as OkObjectResult;
-            var resultValue = resultType?.Value as Cart;
+            var resultValue = resultType?.Value as List<CartItem>;
 
             // Assert
             Assert.NotNull(result);
             Assert.Equivalent(200, resultType.StatusCode);
+            Assert.Equivalent(cartItems, resultValue);
         }
 
         [Fact]
         public async Task Add_ReturnsOkResult()
         {
             // Arrange
-            CartItem cartEntity = new()
+            List<CartItem> cartItems = new()
             {
-                Id = 1,
-                Name = "Entity Name",
-                Image = "url",
-                Price = 10,
-                Quantity = 10
+                new()
+                {
+                    Id = 1,
+                    Name = "Entity Name",
+                    Image = "url",
+                    Price = 10,
+                    Quantity = 10
+                }
             };
 
-            var returnList = new List<CartItem> { cartEntity };
+            CartEntity cartEntity = new()
+            {
+                Id = 1,
+                Name = "Cart name",
+                Items = cartItems
+            };
 
-            Mock<ICart> cart = new Mock<ICart>();
-            cart.Setup(c => c.CartName).Returns("Cart name");
-            cart.Setup(c => c.Items).Returns(returnList);
-            cart.Setup(c => c.AddToItems(It.IsAny<CartItem>())).Returns(1);
+            _mockActions.Setup(c => c.AddToCart(It.IsAny<CartEntity>())).Returns(Task.FromResult(1));
 
-            _provider.Setup(p => p.Cart).Returns(cart.Object);
+            _provider.Setup(p => p.CartActions).Returns(_mockActions.Object);
             _cartingServiceControllerV1 = new CartingServiceController(_logger.Object, _provider.Object);
 
             // Act
             var result = _cartingServiceControllerV1.Add(cartEntity);
             var resultType = result as OkObjectResult;
-            var resultValue = resultType?.Value ;
+            var resultValue = Convert.ToInt32(resultType?.Value);
 
             // Assert
             Assert.NotNull(result);
             Assert.Equivalent(200, resultType.StatusCode);
+            Assert.Equivalent(1, resultValue);
         }
 
         [Fact]
         public async Task Add_ReturnsBadRequestResult()
         {
-            // Arrange
-            CartItem cartEntity = new()
+           // Arrange
+            List<CartItem> cartItems = new()
             {
+                new()
+                {
+                    Id = 1,
+                    Name = "Entity Name",
+                    Image = "url",
+                    Price = 10,
+                    Quantity = 10
+                }
             };
 
-            var returnList = new List<CartItem> { cartEntity };
+            CartEntity cartEntity = new()
+            {
+                Id = 1,
+                Name = "Cart name",
+                Items = cartItems
+            };
 
-            Mock<ICart> cart = new Mock<ICart>();
-            cart.Setup(c => c.CartName).Returns("Cart name");
-            cart.Setup(c => c.Items).Returns(returnList);
-            cart.Setup(c => c.AddToItems(It.IsAny<CartItem>())).Returns(0);
+            _mockActions.Setup(c => c.AddToCart(It.IsAny<CartEntity>())).Returns(Task.FromResult(0));
 
-            _provider.Setup(p => p.Cart).Returns(cart.Object);
+            _provider.Setup(p => p.CartActions).Returns(_mockActions.Object);
             _cartingServiceControllerV1 = new CartingServiceController(_logger.Object, _provider.Object);
 
             // Act
             var result = _cartingServiceControllerV1.Add(cartEntity);
             var resultType = result as BadRequestObjectResult;
-            var resultValue = resultType?.Value;
 
             // Assert
             Assert.NotNull(result);
@@ -122,28 +142,18 @@ namespace CartingWEBAPITests
         [Fact]
         public async Task Delete_ReturnsOkResult()
         {
-            // Arrange
-            CartItem cartEntity = new()
+            DeleteRequest request = new()
             {
-                Id = 1,
-                Name = "Entity Name",
-                Image = "url",
-                Price = 10,
-                Quantity = 10
+                cartItemId = 1,
+                Name = "Entity Name"
             };
+            _mockActions.Setup(c => c.RemoevFromCart(It.IsAny<string>(), It.IsAny<int>())).Returns(Task.FromResult(true));
 
-            var returnList = new List<CartItem> { cartEntity };
-
-            Mock<ICart> cart = new Mock<ICart>();
-            cart.Setup(c => c.CartName).Returns("Cart name");
-            cart.Setup(c => c.Items).Returns(returnList);
-            cart.Setup(c => c.RemoveItem(It.IsAny<CartItem>())).Returns(true);
-
-            _provider.Setup(p => p.Cart).Returns(cart.Object);
+            _provider.Setup(p => p.CartActions).Returns(_mockActions.Object);
             _cartingServiceControllerV1 = new CartingServiceController(_logger.Object, _provider.Object);
 
             // Act
-            var result = _cartingServiceControllerV1.Delete(1);
+            var result = _cartingServiceControllerV1.Delete(request);
             var resultType = result as OkObjectResult;
             var resultValue = resultType?.Value;
 
@@ -155,30 +165,19 @@ namespace CartingWEBAPITests
         [Fact]
         public async Task Delete_ReturnsBadRequestResult()
         {
-            // Arrange
-            CartItem cartEntity = new()
+            DeleteRequest request = new()
             {
-                Id = 5,
-                Name = "Entity Name",
-                Image = "url",
-                Price = 10,
-                Quantity = 10
+                cartItemId = 0,
+                Name = "Entity Name"
             };
+            _mockActions.Setup(c => c.RemoevFromCart(It.IsAny<string>(), It.IsAny<int>())).Returns(Task.FromResult(false));
 
-            var returnList = new List<CartItem> { cartEntity };
-
-            Mock<ICart> cart = new Mock<ICart>();
-            cart.Setup(c => c.CartName).Returns("Cart name");
-            cart.Setup(c => c.Items).Returns(returnList);
-            cart.Setup(c => c.RemoveItem(It.IsAny<CartItem>())).Returns(false);
-
-            _provider.Setup(p => p.Cart).Returns(cart.Object);
+            _provider.Setup(p => p.CartActions).Returns(_mockActions.Object);
             _cartingServiceControllerV1 = new CartingServiceController(_logger.Object, _provider.Object);
 
             // Act
-            var result = _cartingServiceControllerV1.Delete(1);
+            var result = _cartingServiceControllerV1.Delete(request);
             var resultType = result as BadRequestObjectResult;
-            var resultValue = resultType?.Value;
 
             // Assert
             Assert.NotNull(result);

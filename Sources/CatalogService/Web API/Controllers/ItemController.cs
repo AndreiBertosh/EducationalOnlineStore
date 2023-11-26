@@ -39,7 +39,7 @@ namespace WebAPI.Controllers
             return catalogService.ItemActions.Add(value).Result;
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public bool Update([FromBody] Item value)
         {
             return catalogService.ItemActions.Update(value).Result;

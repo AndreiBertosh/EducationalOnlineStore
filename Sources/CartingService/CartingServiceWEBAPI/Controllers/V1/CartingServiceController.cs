@@ -2,6 +2,7 @@
 using CartingServiceBusinessLogic;
 using CartingServiceBusinessLogic.Infrastructure.Entities;
 using CartingServiceBusinessLogic.Infrastructure.Interfaces;
+using CartingServiceWEBAPI.Infrastructure.Requests;
 using CartingServiceWEBAPI.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,23 +14,25 @@ namespace CartingServiceWEBAPI.Controllers.V1
     public class CartingServiceController : Controller
     {
         private readonly ILogger<CartingServiceController> _logger;
-        private readonly ICart _cart;
+        private readonly ICartActionsNew<CartEntity> _cartActions;
 
         public CartingServiceController(ILogger<CartingServiceController> logger, ICartProvider cartProvider)
         {
             _logger = logger;
-            _cart = cartProvider.Cart;
+            _cartActions = cartProvider.CartActions;
         }
 
         /// <summary>
         /// Returns Cart object
         /// </summary>
+        /// <param name="cartName"></param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult GetCart()
+        public ActionResult GetCart(string cartName)
         {
-            var result = _cart;
-            return Ok(result);
+            var result = _cartActions.GetCart(cartName).Result;
+
+            return Ok(result.Items);
         }
 
         /// <summary>
@@ -38,12 +41,12 @@ namespace CartingServiceWEBAPI.Controllers.V1
         /// <param name="value"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult Add([FromBody] CartItem value)
+        public ActionResult Add([FromBody] CartEntity value)
         {
-            var result = _cart.AddToItems(value);
+            var result = _cartActions.AddToCart(value).Result;
             if (result > 0)
             {
-                return Ok(_cart.AddToItems(value));
+                return Ok(result);
             }
             return BadRequest("Item was not added.");
         }
@@ -51,17 +54,18 @@ namespace CartingServiceWEBAPI.Controllers.V1
         /// <summary>
         /// Remove CartEntity from the database
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
-        [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        [HttpDelete()]
+        public ActionResult Delete([FromBody] DeleteRequest request)
         {
-            var item = _cart.Items.FirstOrDefault(x => x.Id == id);
-            if (item == null)
+            var cartName = request.Name;
+            var result = _cartActions.RemoevFromCart(request.Name, request.cartItemId).Result;
+            if (!result)
             {
                 return BadRequest("Item was not deleted.");
             }
-            return Ok(_cart.RemoveItem(item));
+            return Ok(result);
         }
     }
 }

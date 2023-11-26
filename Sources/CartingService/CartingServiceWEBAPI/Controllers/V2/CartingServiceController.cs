@@ -13,12 +13,12 @@ namespace CartingServiceWEBAPI.Controllers.V2
     public class CartingServiceController : Controller
     {
         private readonly ILogger<CartingServiceController> _logger;
-        private readonly ICart _cart;
+        private readonly ICartActionsNew<CartEntity> _cartActions;
 
         public CartingServiceController(ILogger<CartingServiceController> logger, ICartProvider cartProvider)
         {
             _logger = logger;
-            _cart = cartProvider.Cart;
+            _cartActions = cartProvider.CartActions;
         }
 
         /// <summary>
@@ -26,10 +26,9 @@ namespace CartingServiceWEBAPI.Controllers.V2
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        //        public IEnumerable<CartEntity> GetItems(string cartName)
         public ActionResult GetCart(string cartName)
         {
-            var result = _cart.Items;
+            var result = _cartActions.GetCart(cartName).Result;
             return Ok(result);
         }
 

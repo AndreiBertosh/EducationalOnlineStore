@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CartingServiceBusinessLogic.Infrastructure.Settings
+﻿namespace CartingServiceBusinessLogic.Infrastructure.Settings
 {
     public class DatabaseSettings
     {

@@ -1,5 +1,7 @@
-﻿using Domain.Entities;
+﻿using Application.AzureServiceBus;
+using Domain.Entities;
 using Domain.Interfaces;
+using System.Text.Json;
 
 namespace Application.Actions
 {
@@ -32,9 +34,17 @@ namespace Application.Actions
             return Task.FromResult(_repository.GetById(id).Result);
         }
 
-        public Task<bool> Update(Item item)
+        public async Task<bool> Update(Item item)
         {
-            return Task.FromResult(_repository.Update(item).Result);
+            bool result = _repository.Update(item).Result;
+            if (result)
+            {
+                var service = new AzureServiceBusSendService();
+                string message = JsonSerializer.Serialize(item);
+                string resultMessage = await service.Send(message);
+            }
+
+            return result;
         }
 
         public Task<bool> DeleteAllItemsForCategoryId(int categoryId)

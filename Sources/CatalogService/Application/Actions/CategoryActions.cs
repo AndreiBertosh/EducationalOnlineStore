@@ -37,7 +37,8 @@ namespace Application.Actions
 
         public Task<bool> Update(Category item)
         {
-            return Task.FromResult(_repository.Update(item).Result);
+            var result = _repository.Update(item).Result;
+            return Task.FromResult(result);
         }
     }
 }

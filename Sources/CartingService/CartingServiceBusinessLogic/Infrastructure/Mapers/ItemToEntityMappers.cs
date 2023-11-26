@@ -20,12 +20,6 @@ namespace CartingServiceBusinessLogic.Infrastructure.Mapers
                 cfg.CreateMap<CartEntity, CartModel>().ReverseMap();
                 cfg.CreateMap<CartItem, CartItemModel>().ReverseMap();
             });
-            
-                //.ForMember<> .ReverseMap());
-                //.ForMember(dest => ItemToModelMapper().Map<List<CartItem>>(dest.Items), opt => opt.MapFrom(src => src.Items))
-                //.ForMember(dest => dest.Items, opt => opt.ConvertUsing(ItemToModelMapper().Map<List<CartItem>>(opt.)))
-                //.ForSourceMember(dest => dest.Items, opt => opt.DoNotValidate())
-                //.ReverseMap());
 
             return new(mapConfig);
         }
