@@ -35,9 +35,17 @@ namespace Application.Actions
             return Task.FromResult(_repository.GetById(id).Result);
         }
 
-        public Task<bool> Update(Category item)
+        public Task<string> Update(Category item)
         {
-            var result = _repository.Update(item).Result;
+            string result = string.Empty;
+            if (_repository.Update(item).Result)
+            {
+                result = $"The category {item.Name} was updated.";
+            }
+            else
+            {
+                result = $"The category {item.Name} was not updated!!!";
+            };
             return Task.FromResult(result);
         }
     }

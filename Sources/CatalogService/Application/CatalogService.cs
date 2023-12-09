@@ -17,7 +17,7 @@ namespace Application
         private CategoryActions _categoryActions;
         private IActionsItem<Item> _itemActions;
 
-        public CatalogService(string? connection) 
+        public CatalogService(string? connection, IAzureServiceBusSendService service) 
         {
             string connectionString = string.Empty;
 
@@ -37,7 +37,7 @@ namespace Application
 
             _itemRepository = new(_context);
             _categoryRepository = new(_context);
-            _itemActions = new ItemActions(_itemRepository);
+            _itemActions = new ItemActions(_itemRepository, service);
             _categoryActions = new(_categoryRepository, _itemActions);
         }
 

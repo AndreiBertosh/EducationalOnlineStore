@@ -1,21 +1,25 @@
 ﻿using Application;
 using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web.Resource;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebAPI.Controllers
 {
+    [Authorize()]
+    [RequiredScope("access_as_user")]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
         private readonly ICatalogService catalogService;
 
-        public CategoryController() 
+        public CategoryController(ICatalogProvider provider) 
         {
-            catalogService = new CatalogService(string.Empty);
+            catalogService = new CatalogService(string.Empty, provider.ServiceBusSender);
         }
 
         [HttpGet]
@@ -41,7 +45,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public bool Update([FromBody] Category value)
+        public string Update([FromBody] Category value)
         {
             return catalogService.CategoryActions.Update(value).Result;
         }

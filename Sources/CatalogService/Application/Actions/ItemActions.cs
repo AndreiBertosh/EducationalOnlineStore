@@ -8,10 +8,12 @@ namespace Application.Actions
     public class ItemActions : IActionsItem<Item>
     {
         private readonly IRepository<Item> _repository;
+        private IAzureServiceBusSendService _service;
 
-        public ItemActions(IRepository<Item> repository)
+        public ItemActions(IRepository<Item> repository, IAzureServiceBusSendService service)
         {
             _repository = repository;
+            _service = service;
         }
 
         public Task<int> Add(Item item)
@@ -34,17 +36,18 @@ namespace Application.Actions
             return Task.FromResult(_repository.GetById(id).Result);
         }
 
-        public async Task<bool> Update(Item item)
+        public async Task<string> Update(Item item)
         {
             bool result = _repository.Update(item).Result;
             if (result)
             {
-                var service = new AzureServiceBusSendService();
                 string message = JsonSerializer.Serialize(item);
-                string resultMessage = await service.Send(message);
+                string resultMessage = await _service.Send(message);
+                return resultMessage;
             }
 
-            return result;
+            return "Error with published to the queue.";
+            //return result;
         }
 
         public Task<bool> DeleteAllItemsForCategoryId(int categoryId)

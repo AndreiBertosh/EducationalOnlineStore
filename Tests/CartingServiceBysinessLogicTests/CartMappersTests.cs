@@ -16,7 +16,7 @@ namespace DomainTests
                 { 
                     Id = 1,
                     Name = "Test",
-                    Image = "url",
+                    ImageUrl = "url",
                     Price = 20,
                     Quantity = 10
                 },
@@ -24,7 +24,7 @@ namespace DomainTests
                 {
                     Id = 2,
                     Name = "Test2",
-                    Image = "url2",
+                    ImageUrl = "url2",
                     Price = 40,
                     Quantity = 20
                 }
@@ -42,7 +42,7 @@ namespace DomainTests
                 {
                     Id = 1,
                     Name = "Test",
-                    Image = "url",
+                    ImageUrl = "url",
                     Price = 20,
                     Quantity = 10
                 },
@@ -50,7 +50,7 @@ namespace DomainTests
                 {
                     Id = 2,
                     Name = "Test2",
-                    Image = "url2",
+                    ImageUrl = "url2",
                     Price = 40,
                     Quantity = 20
                 }
@@ -80,7 +80,7 @@ namespace DomainTests
                 {
                     Id = 1,
                     Name = "Test",
-                    Image = "url",
+                    ImageUrl = "url",
                     Price = 20,
                     Quantity = 10
                 },
@@ -88,7 +88,7 @@ namespace DomainTests
                 {
                     Id = 2,
                     Name = "Test2",
-                    Image = "url2",
+                    ImageUrl = "url2",
                     Price = 40,
                     Quantity = 20
                 }
@@ -106,7 +106,7 @@ namespace DomainTests
                 {
                     Id = 1,
                     Name = "Test",
-                    Image = "url",
+                    ImageUrl = "url",
                     Price = 20,
                     Quantity = 10
                 },
@@ -114,7 +114,7 @@ namespace DomainTests
                 {
                     Id = 2,
                     Name = "Test2",
-                    Image = "url2",
+                    ImageUrl = "url2",
                     Price = 40,
                     Quantity = 20
                 }

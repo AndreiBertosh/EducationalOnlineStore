@@ -34,7 +34,7 @@ namespace CartingWEBAPITests
                 {
                     Id = 1,
                     Name = "Entity Name",
-                    Image = "url",
+                    ImageUrl = "url",
                     Price = 10,
                     Quantity = 10
                 }
@@ -73,7 +73,7 @@ namespace CartingWEBAPITests
                 {
                     Id = 1,
                     Name = "Entity Name",
-                    Image = "url",
+                    ImageUrl = "url",
                     Price = 10,
                     Quantity = 10
                 }
@@ -112,7 +112,7 @@ namespace CartingWEBAPITests
                 {
                     Id = 1,
                     Name = "Entity Name",
-                    Image = "url",
+                    ImageUrl = "url",
                     Price = 10,
                     Quantity = 10
                 }

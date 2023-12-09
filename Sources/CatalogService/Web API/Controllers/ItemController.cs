@@ -1,23 +1,29 @@
 ﻿using Application;
 using Domain.Entities;
+using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web.Resource;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebAPI.Controllers
 {
+    [Authorize()]
     [Route("api/[controller]")]
     [ApiController]
     public class ItemController : ControllerBase
     {
         private readonly CatalogService catalogService;
 
-        public ItemController()
+        public ItemController(ICatalogProvider provider)
         {
-            catalogService = new CatalogService(string.Empty);
+            catalogService = new CatalogService(string.Empty, provider.ServiceBusSender);
         }
 
         [HttpGet]
+        //[RequiredScope("OnlineStore.Read")]
+        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
         public IEnumerable<Item> GetAll()
         {
             return catalogService.ItemActions.GetAll().Result;
@@ -34,13 +40,15 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
+        [RequiredScope("OnlineStore.ReadWrite")]
         public int Add([FromBody] Item value)
         {
             return catalogService.ItemActions.Add(value).Result;
         }
 
         [HttpPut]
-        public bool Update([FromBody] Item value)
+        [RequiredScope("OnlineStore.ReadWrite")]
+        public string Update([FromBody] Item value)
         {
             return catalogService.ItemActions.Update(value).Result;
         }

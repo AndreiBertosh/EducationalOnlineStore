@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Azure.Messaging.ServiceBus;
-using Azure.Identity;
-using Microsoft.Azure.Amqp.Framing;
+﻿using Azure.Messaging.ServiceBus;
+using Domain.Interfaces;
 
 namespace Application.AzureServiceBus
 {
-    public class AzureServiceBusSendService 
+    public class AzureServiceBusSendService : IAzureServiceBusSendService
     {
-        // number of messages to be sent to the queue
-        private const int numOfMessages = 3;
-        private readonly string _queueName = "catalogservicequeue";
-        private readonly string _connectionString = "Endpoint=sb://testbamservice.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=GWMI/c6E6ZLmQzrLhQjL1jgoWG+Gml6Vu+ASbD9xmWc=";
+        private readonly string _queueName; // = "catalogservicequeue";
+        private readonly string _connectionString; // = "Endpoint=sb://testbamservice.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=GWMI/c6E6ZLmQzrLhQjL1jgoWG+Gml6Vu+ASbD9xmWc=";
+
+        public AzureServiceBusSendService(string queueName, string connectionString)
+        {
+            _queueName = queueName;
+            _connectionString = connectionString;
+        }
 
         public async Task<string> Send(string message) 
         {
@@ -43,7 +41,7 @@ namespace Application.AzureServiceBus
             {
                 // Use the producer client to send the batch of messages to the Service Bus queue
                 await _sender.SendMessagesAsync(messageBatch);
-                return $"A messages has been published to the queue.";
+                return $"A messages has been updated and published to the queue.";
             }
             catch (Exception ex)
             {

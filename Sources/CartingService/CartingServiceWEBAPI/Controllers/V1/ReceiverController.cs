@@ -1,7 +1,4 @@
 ﻿using Asp.Versioning;
-using CartingServiceBusinessLogic.Infrastructure.Entities;
-using CartingServiceBusinessLogic.Infrastructure.Interfaces;
-using CartingServiceWEBAPI.AzureServiceBusreceiver;
 using CartingServiceWEBAPI.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

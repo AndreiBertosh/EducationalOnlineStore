@@ -1,4 +1,5 @@
 ﻿using Application.AzureServiceBus;
+using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web_API.Controllers
@@ -7,11 +8,11 @@ namespace Web_API.Controllers
     [ApiController]
     public class ServiceBusSenderController : Controller
     {
-        private readonly AzureServiceBusSendService _azureService;
+        private readonly IAzureServiceBusSendService _azureService;
 
-        public ServiceBusSenderController()
+        public ServiceBusSenderController(IAzureServiceBusSendService service)
         {
-            _azureService = new AzureServiceBusSendService();
+            _azureService = service;
         }
 
         [HttpPost]

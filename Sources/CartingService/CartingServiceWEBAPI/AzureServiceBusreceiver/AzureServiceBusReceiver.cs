@@ -2,6 +2,7 @@
 using Azure.Messaging.ServiceBus;
 using CartingServiceBusinessLogic.Infrastructure.Entities;
 using CartingServiceBusinessLogic.Infrastructure.Interfaces;
+using CartingServiceBusinessLogic.Infrastructure.Settings;
 using CartingServiceWEBAPI.Interfaces;
 using System.Text.Json;
 
@@ -9,8 +10,8 @@ namespace CartingServiceWEBAPI.AzureServiceBusreceiver
 {
     public class AzureServiceBusReceiver : IAzureServiceBusReceiver, IDisposable
     {
-        private readonly string _queueName = "catalogservicequeue"; // /$deadletterqueue"; 
-        private readonly string _connectionString = "Endpoint=sb://testbamservice.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=GWMI/c6E6ZLmQzrLhQjL1jgoWG+Gml6Vu+ASbD9xmWc=";
+        private readonly string _queueName; // = "catalogservicequeue/$deadletterqueue"; 
+        private readonly string _connectionString; // = "Endpoint=sb://testbamservice.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=GWMI/c6E6ZLmQzrLhQjL1jgoWG+Gml6Vu+ASbD9xmWc=";
         private readonly ICartActionsNew<CartEntity> _cartActions;
 
         // the client that owns the connection and can be used to create senders and receivers
@@ -20,9 +21,11 @@ namespace CartingServiceWEBAPI.AzureServiceBusreceiver
         private readonly ServiceBusProcessor processor;
         private readonly ServiceBusReceiver receiver;
 
-        public AzureServiceBusReceiver(ICartActionsNew<CartEntity> cartActions)
+        public AzureServiceBusReceiver(ICartActionsNew<CartEntity> cartActions, QueueSettings settings)
         {
             _cartActions = cartActions;
+            _queueName = settings.QueueName;
+            _connectionString = settings.ConnectionString;
 
             var clientOptions = new ServiceBusClientOptions()
             {
@@ -51,10 +54,6 @@ namespace CartingServiceWEBAPI.AzureServiceBusreceiver
             // Stop processing
             await processor.StopProcessingAsync();
 
-            // remove handler to process messages
-            //processor.ProcessMessageAsync -= MessageHandler;
-            //// remove handler to process any errors
-            //processor.ProcessErrorAsync -= ErrorHandler;
         }
 
         async Task MessageHandler(ProcessMessageEventArgs args)

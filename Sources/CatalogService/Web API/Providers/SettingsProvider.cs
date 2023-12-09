@@ -1,7 +1,7 @@
-﻿using CartingServiceBusinessLogic.Infrastructure.Settings;
-using CartingServiceWEBAPI.Interfaces;
+﻿using Domain.Interfaces;
+using Domain.Settings;
 
-namespace CartingServiceWEBAPI.Providers
+namespace Web_API.Providers
 {
     public class SettingsProvider : ISettingsProvider
     {

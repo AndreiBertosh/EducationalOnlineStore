@@ -1,6 +1,6 @@
-﻿using CartingServiceBusinessLogic.Infrastructure.Settings;
+﻿using Domain.Settings;
 
-namespace CartingServiceWEBAPI.Interfaces
+namespace Domain.Interfaces
 {
     public interface ISettingsProvider
     {
