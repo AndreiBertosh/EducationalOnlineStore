@@ -3,6 +3,7 @@ using Application.Actions;
 using Domain.Interfaces;
 using Domain.Entities;
 using Domain.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ApplicationTests
 {
@@ -104,7 +105,7 @@ namespace ApplicationTests
             var result = actions.Update(category).Result;
 
             // Assert
-            Assert.True(result);
+            Assert.True(!result.IsNullOrEmpty());
         }
 
         [Fact]

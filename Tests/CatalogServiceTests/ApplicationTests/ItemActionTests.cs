@@ -3,16 +3,17 @@ using Application.Actions;
 using Domain.Interfaces;
 using Domain.Entities;
 using Domain.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ApplicationTests
 {
     public class ItemActionTests
     {
-        private readonly IAzureServiceBusSendService _serviceBusSendService;
+        private readonly Mock<IAzureServiceBusSendService> _serviceBusSendService;
 
         public ItemActionTests()
         {
-            _serviceBusSendService = new Mock<IAzureServiceBusSendService>().Object;
+            _serviceBusSendService = new Mock<IAzureServiceBusSendService>();
         }
 
         [Fact]
@@ -23,7 +24,7 @@ namespace ApplicationTests
             var repository = new Mock<IRepository<Item>>();
             repository.Setup(a => a.Add(It.IsAny<Item>())).Returns(Task.FromResult(1));
 
-            ItemActions actions = new(repository.Object, _serviceBusSendService);
+            ItemActions actions = new(repository.Object, _serviceBusSendService.Object);
 
             Item item = new()
             {
@@ -49,7 +50,7 @@ namespace ApplicationTests
             var repository = new Mock<IRepository<Item>>();
             repository.Setup(a => a.Delete(It.IsAny<int>())).Returns(Task.FromResult(true));
 
-            ItemActions actions = new(repository.Object, _serviceBusSendService);
+            ItemActions actions = new(repository.Object, _serviceBusSendService.Object);
 
             Item item = new()
             {
@@ -70,7 +71,7 @@ namespace ApplicationTests
             var repository = new Mock<IRepository<Item>>();
             repository.Setup(a => a.Delete(It.IsAny<int>())).Returns(Task.FromResult(false));
 
-            ItemActions actions = new(repository.Object, _serviceBusSendService);
+            ItemActions actions = new(repository.Object, _serviceBusSendService.Object);
 
             Item item = new()
             {
@@ -96,8 +97,9 @@ namespace ApplicationTests
             // Arrange
             var repository = new Mock<IRepository<Item>>();
             repository.Setup(a => a.Update(It.IsAny<Item>())).Returns(Task.FromResult(true));
+            _serviceBusSendService.Setup(a => a.Send(It.IsAny<string>())).Returns(Task.FromResult("Message"));
 
-            ItemActions actions = new(repository.Object, _serviceBusSendService);
+            ItemActions actions = new(repository.Object, _serviceBusSendService.Object);
 
             Item item = new()
             {
@@ -114,7 +116,7 @@ namespace ApplicationTests
             var result = actions.Update(item).Result;
 
             // Assert
-            Assert.True(result);
+            Assert.Equal("Message",result);
         }
 
         [Fact]
@@ -146,7 +148,7 @@ namespace ApplicationTests
             var repository = new Mock<IRepository<Item>>();
             repository.Setup(a => a.GetById(It.IsAny<int>())).Returns(Task.FromResult(item));
 
-            ItemActions actions = new(repository.Object, _serviceBusSendService);
+            ItemActions actions = new(repository.Object, _serviceBusSendService.Object);
 
             // Act
             var result = actions.GetById(1).Result;
@@ -206,7 +208,7 @@ namespace ApplicationTests
             var repository = new Mock<IRepository<Item>>();
             repository.Setup(a => a.GetAll()).Returns(Task.FromResult(items));
 
-            ItemActions actions = new(repository.Object, _serviceBusSendService);
+            ItemActions actions = new(repository.Object, _serviceBusSendService.Object);
 
             // Act
             var result = actions.GetAll().Result;

@@ -4,6 +4,7 @@ using Domain.Interfaces;
 using Domain.Models;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Moq;
 
 namespace ApplicationTests
@@ -13,12 +14,12 @@ namespace ApplicationTests
         private readonly string _connection = @"data source=(localdb)\MSSQLLocalDB;Initial Catalog=TestCatalogDb;Integrated Security=True;";
         private readonly InfrastructureContext testDatabase;
         private CatalogService _service;
-        private IAzureServiceBusSendService _azureService;
+        private Mock<IAzureServiceBusSendService> _azureService;
 
         public CatalogServiceTests()
         {
-            _azureService = new Mock<IAzureServiceBusSendService>().Object;
-            _service = new(_connection, _azureService);
+            _azureService = new Mock<IAzureServiceBusSendService>();
+            _service = new(_connection, _azureService.Object);
 
             InfrastructureContext db = new()
             {
@@ -97,7 +98,7 @@ namespace ApplicationTests
             var result = _service.CategoryActions.Update(ExpectedCategory).Result;
 
             // Assert
-            Assert.True(result);
+            Assert.True(!result.IsNullOrEmpty());
 
             var updatedCategory = testDatabase.Categories.AsNoTracking().FirstOrDefault(c => c.Id == ExpectedCategory.Id);
             Assert.Equivalent("New Name", updatedCategory?.Name);
@@ -199,6 +200,7 @@ namespace ApplicationTests
         public void UpdateItem_WhenModelIsOk_ReturnsTrueAndModelIsChanged()
         {
             // Arrange
+            _azureService.Setup(a => a.Send(It.IsAny<string>())).Returns(Task.FromResult("Message"));
 
             CategoryModel category = new() { Name = "testCategory" };
             testDatabase.Categories.Add(category);
@@ -222,7 +224,7 @@ namespace ApplicationTests
             var result = _service.ItemActions.Update(item).Result;
 
             // Assert
-            Assert.True(result);
+            Assert.Equal("Message", result);
 
             var updatedItem = testDatabase.Items.AsNoTracking().FirstOrDefault(c => c.Id == item.Id);
             Assert.Equivalent(updatedItem?.Name, "New Name");
