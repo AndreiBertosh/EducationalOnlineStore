@@ -8,6 +8,13 @@ namespace ApplicationTests
 {
     public class ItemActionTests
     {
+        private readonly IAzureServiceBusSendService _serviceBusSendService;
+
+        public ItemActionTests()
+        {
+            _serviceBusSendService = new Mock<IAzureServiceBusSendService>().Object;
+        }
+
         [Fact]
         public void AddItem_WhenModelIsOk_ReturnsId()
         {
@@ -16,7 +23,7 @@ namespace ApplicationTests
             var repository = new Mock<IRepository<Item>>();
             repository.Setup(a => a.Add(It.IsAny<Item>())).Returns(Task.FromResult(1));
 
-            ItemActions actions = new(repository.Object);
+            ItemActions actions = new(repository.Object, _serviceBusSendService);
 
             Item item = new()
             {
@@ -42,7 +49,7 @@ namespace ApplicationTests
             var repository = new Mock<IRepository<Item>>();
             repository.Setup(a => a.Delete(It.IsAny<int>())).Returns(Task.FromResult(true));
 
-            ItemActions actions = new(repository.Object);
+            ItemActions actions = new(repository.Object, _serviceBusSendService);
 
             Item item = new()
             {
@@ -63,7 +70,7 @@ namespace ApplicationTests
             var repository = new Mock<IRepository<Item>>();
             repository.Setup(a => a.Delete(It.IsAny<int>())).Returns(Task.FromResult(false));
 
-            ItemActions actions = new(repository.Object);
+            ItemActions actions = new(repository.Object, _serviceBusSendService);
 
             Item item = new()
             {
@@ -90,7 +97,7 @@ namespace ApplicationTests
             var repository = new Mock<IRepository<Item>>();
             repository.Setup(a => a.Update(It.IsAny<Item>())).Returns(Task.FromResult(true));
 
-            ItemActions actions = new(repository.Object);
+            ItemActions actions = new(repository.Object, _serviceBusSendService);
 
             Item item = new()
             {
@@ -139,7 +146,7 @@ namespace ApplicationTests
             var repository = new Mock<IRepository<Item>>();
             repository.Setup(a => a.GetById(It.IsAny<int>())).Returns(Task.FromResult(item));
 
-            ItemActions actions = new(repository.Object);
+            ItemActions actions = new(repository.Object, _serviceBusSendService);
 
             // Act
             var result = actions.GetById(1).Result;
@@ -199,7 +206,7 @@ namespace ApplicationTests
             var repository = new Mock<IRepository<Item>>();
             repository.Setup(a => a.GetAll()).Returns(Task.FromResult(items));
 
-            ItemActions actions = new(repository.Object);
+            ItemActions actions = new(repository.Object, _serviceBusSendService);
 
             // Act
             var result = actions.GetAll().Result;

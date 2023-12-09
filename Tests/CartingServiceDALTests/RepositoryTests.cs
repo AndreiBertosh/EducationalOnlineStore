@@ -13,7 +13,7 @@ namespace CartingServiceDALTests
         {
             using (var database = new LiteDatabase(_testDatabaseName))
             {
-                var collection = database.GetCollection<CartItem>(_testCollectionName);
+                var collection = database.GetCollection<CartItemModel>(_testCollectionName);
                 collection.DeleteAll();
             }
         }
@@ -22,9 +22,9 @@ namespace CartingServiceDALTests
         public void Add_WhenEntitiIsCorrect_ReturnsId()
         {
             // Arrange
-            var repository = new CartRepository<CartItem>(_testDatabaseName, _testCollectionName);
+            var repository = new CartRepository<CartItemModel>(_testDatabaseName, _testCollectionName);
 
-            var cartItem = new CartItem()
+            var cartItem = new CartItemModel()
             {
                 Name = "TestItem",
                 Price = 10,
@@ -42,9 +42,9 @@ namespace CartingServiceDALTests
         public void Delete_WhenEntitiIsCorrect_ReturnsTrue()
         {
             // Arrange
-            var repository = new CartRepository<CartItem>(_testDatabaseName, _testCollectionName);
+            var repository = new CartRepository<CartItemModel>(_testDatabaseName, _testCollectionName);
 
-            var cartItem = new CartItem()
+            var cartItem = new CartItemModel()
             {
                 Name = "TestItemToDelete",
                 Price = 10,
@@ -53,7 +53,7 @@ namespace CartingServiceDALTests
 
             using (var database = new LiteDatabase(_testDatabaseName))
             {
-                var collection = database.GetCollection<CartItem>(_testCollectionName);
+                var collection = database.GetCollection<CartItemModel>(_testCollectionName);
                 collection.Insert(cartItem);
             }
 
@@ -68,17 +68,17 @@ namespace CartingServiceDALTests
         public void GetAll_WhenEntitiIsCorrect_ReturnsListCartItem()
         {
             // Arrange
-            var repository = new CartRepository<CartItem>(_testDatabaseName, _testCollectionName);
+            var repository = new CartRepository<CartItemModel>(_testDatabaseName, _testCollectionName);
 
-            var expectedItems = new List<CartItem>
+            var expectedItems = new List<CartItemModel>
             {
-                new CartItem
+                new CartItemModel
                 {
                     Name = "TestItemOne",
                     Price = 10,
                     Quantity = 1
                 },
-                new CartItem
+                new CartItemModel
                 {
                     Name = "TestItemTwo",
                     Price = 20,
@@ -88,7 +88,7 @@ namespace CartingServiceDALTests
 
             using (var database = new LiteDatabase(_testDatabaseName))
             {
-                var collection = database.GetCollection<CartItem>(_testCollectionName);
+                var collection = database.GetCollection<CartItemModel>(_testCollectionName);
                 collection.Insert(expectedItems);
             }
 
@@ -103,9 +103,9 @@ namespace CartingServiceDALTests
         public void GetById_WhenEntitiIsCorrect_ReturnsCartItem()
         {
             // Arrange
-            var repository = new CartRepository<CartItem>(_testDatabaseName, _testCollectionName);
+            var repository = new CartRepository<CartItemModel>(_testDatabaseName, _testCollectionName);
 
-            var expectedItem = new CartItem()
+            var expectedItem = new CartItemModel()
             {
                 Name = "TestItemToDelete",
                 Price = 10,
@@ -114,7 +114,7 @@ namespace CartingServiceDALTests
 
             using (var database = new LiteDatabase(_testDatabaseName))
             {
-                var collection = database.GetCollection<CartItem>(_testCollectionName);
+                var collection = database.GetCollection<CartItemModel>(_testCollectionName);
                 collection.Insert(expectedItem);
             }
 
@@ -130,9 +130,9 @@ namespace CartingServiceDALTests
         public void GetById_WhenEntitiIsInCorrect_ReturnsNull()
         {
             // Arrange
-            var repository = new CartRepository<CartItem>(_testDatabaseName, _testCollectionName);
+            var repository = new CartRepository<CartItemModel>(_testDatabaseName, _testCollectionName);
 
-            var expectedItem = new CartItem()
+            var expectedItem = new CartItemModel()
             {
                 Name = "TestItemToDelete",
                 Price = 10,
@@ -141,7 +141,7 @@ namespace CartingServiceDALTests
 
             using (var database = new LiteDatabase(_testDatabaseName))
             {
-                var collection = database.GetCollection<CartItem>(_testCollectionName);
+                var collection = database.GetCollection<CartItemModel>(_testCollectionName);
                 collection.Insert(expectedItem);
             }
 
@@ -156,9 +156,9 @@ namespace CartingServiceDALTests
         public void Update_WhenEntitiIsCorrect_ReturnsCartItem()
         {
             // Arrange
-            var repository = new CartRepository<CartItem>(_testDatabaseName, _testCollectionName);
+            var repository = new CartRepository<CartItemModel>(_testDatabaseName, _testCollectionName);
 
-            var expectedItem = new CartItem()
+            var expectedItem = new CartItemModel()
             {
                 Name = "TestItemToUpdate",
                 Price = 10,
@@ -167,7 +167,7 @@ namespace CartingServiceDALTests
 
             using (var database = new LiteDatabase(_testDatabaseName))
             {
-                var collection = database.GetCollection<CartItem>(_testCollectionName);
+                var collection = database.GetCollection<CartItemModel>(_testCollectionName);
                 collection.Insert(expectedItem);
             }
 

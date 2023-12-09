@@ -8,6 +8,13 @@ namespace ApplicationTests
 {
     public class CategoryActionTests
     {
+        private IAzureServiceBusSendService _serviceBusSendService;
+
+        public CategoryActionTests() 
+        {
+            _serviceBusSendService = new Mock<IAzureServiceBusSendService>().Object;
+        }
+
         [Fact]
         public void AddCategory_WhenModelIsOk_ReturnsId()
         {
@@ -15,7 +22,10 @@ namespace ApplicationTests
             var repository = new Mock<IRepository<Category>>();
             repository.Setup(a => a.Add(It.IsAny<Category>())).Returns(Task.FromResult(1));
 
-            CategoryActions actions = new CategoryActions(repository.Object);
+            var itemRepository = new Mock<IRepository<Item>>();
+            var itemActions = new ItemActions(itemRepository.Object, _serviceBusSendService);
+
+            CategoryActions actions = new CategoryActions(repository.Object, itemActions);
 
             Category category = new Category
             { 
@@ -23,7 +33,7 @@ namespace ApplicationTests
             };
 
             // Act
-            var result = actions.Add(category).Result;
+            int result = actions.Add(category).Result;
 
             // Assert
             Assert.Equal(1, result);
@@ -36,15 +46,15 @@ namespace ApplicationTests
             var repository = new Mock<IRepository<Category>>();
             repository.Setup(a => a.Delete(It.IsAny<int>())).Returns(Task.FromResult(true));
 
-            CategoryActions actions = new CategoryActions(repository.Object);
+            var itemRepository = new Mock<IRepository<Item>>();
+            itemRepository.Setup(i => i.GetAll()).Returns(Task.FromResult(new List<Item>()));
+            itemRepository.Setup(i => i.Delete(It.IsAny<int>())).Returns(Task.FromResult(true));
+            var itemActions = new ItemActions(itemRepository.Object, _serviceBusSendService);
 
-            Category category = new Category
-            {
-                Id = 1
-            };
+            CategoryActions actions = new CategoryActions(repository.Object, itemActions);
 
             // Act
-            var result = actions.Delete(category.Id).Result;
+            var result = actions.Delete(1).Result;
 
             // Assert
             Assert.True(result);
@@ -57,15 +67,15 @@ namespace ApplicationTests
             var repository = new Mock<IRepository<Category>>();
             repository.Setup(a => a.Delete(It.IsAny<int>())).Returns(Task.FromResult(false));
 
-            CategoryActions actions = new CategoryActions(repository.Object);
+            var itemRepository = new Mock<IRepository<Item>>();
+            itemRepository.Setup(i => i.GetAll()).Returns(Task.FromResult(new List<Item>()));
+            itemRepository.Setup(i => i.Delete(It.IsAny<int>())).Returns(Task.FromResult(true));
+            var itemActions = new ItemActions(itemRepository.Object, _serviceBusSendService);
 
-            Category category = new Category
-            {
-                Id = 1
-            };
+            CategoryActions actions = new CategoryActions(repository.Object, itemActions);
 
             // Act
-            var result = actions.Delete(category.Id).Result;
+            var result = actions.Delete(1).Result;
 
             // Assert
             Assert.False(result);
@@ -78,7 +88,10 @@ namespace ApplicationTests
             var repository = new Mock<IRepository<Category>>();
             repository.Setup(a => a.Update(It.IsAny<Category>())).Returns(Task.FromResult(true));
 
-            CategoryActions actions = new CategoryActions(repository.Object);
+            var itemRepository = new Mock<IRepository<Item>>();
+            var itemActions = new ItemActions(itemRepository.Object, _serviceBusSendService);
+
+            CategoryActions actions = new CategoryActions(repository.Object, itemActions);
 
             Category category = new()
             {
@@ -115,7 +128,10 @@ namespace ApplicationTests
             var repository = new Mock<IRepository<Category>>();
             repository.Setup(a => a.GetById(It.IsAny<int>())).Returns(Task.FromResult(category));
 
-            CategoryActions actions = new CategoryActions(repository.Object);
+            var itemRepository = new Mock<IRepository<Item>>();
+            var itemActions = new ItemActions(itemRepository.Object, _serviceBusSendService);
+
+            CategoryActions actions = new CategoryActions(repository.Object, itemActions);
 
             // Act
             var result = actions.GetById(1).Result;
@@ -159,7 +175,10 @@ namespace ApplicationTests
             var repository = new Mock<IRepository<Category>>();
             repository.Setup(a => a.GetAll()).Returns(Task.FromResult(categories));
 
-            CategoryActions actions = new CategoryActions(repository.Object);
+            var itemRepository = new Mock<IRepository<Item>>();
+            var itemActions = new ItemActions(itemRepository.Object, _serviceBusSendService);
+
+            CategoryActions actions = new CategoryActions(repository.Object, itemActions); ;
 
             // Act
             var result = actions.GetAll().Result;

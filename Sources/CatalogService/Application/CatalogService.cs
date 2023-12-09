@@ -1,11 +1,13 @@
 using Application.Actions;
+using Domain.Entities;
+using Domain.Interfaces;
 using Infrastructure;
 using Infrastructure.Repositories;
 using System.Configuration;
 
 namespace Application
 {
-    public class CatalogService
+    public class CatalogService : ICatalogService
     {
         private InfrastructureContext _context;
 
@@ -13,15 +15,15 @@ namespace Application
         private ItemRepository _itemRepository;
 
         private CategoryActions _categoryActions;
-        private ItemActions _itemActions;
+        private IActionsItem<Item> _itemActions;
 
-        public CatalogService(string? connection) 
+        public CatalogService(string? connection, IAzureServiceBusSendService service) 
         {
             string connectionString = string.Empty;
 
             if (string.IsNullOrEmpty(connection))
             {
-                connectionString = ConfigurationManager.AppSettings["connectionstring"];
+                connectionString = ConfigurationManager.ConnectionStrings["CatalogService"].ConnectionString;
             }
             else 
             {
@@ -33,13 +35,13 @@ namespace Application
                 Connection = connectionString
             };
 
-            _categoryRepository = new(_context);
             _itemRepository = new(_context);
-            _categoryActions = new(_categoryRepository);
-            _itemActions = new(_itemRepository);
+            _categoryRepository = new(_context);
+            _itemActions = new ItemActions(_itemRepository, service);
+            _categoryActions = new(_categoryRepository, _itemActions);
         }
 
-        public CategoryActions CategoryActions 
+        public IActions<Category> CategoryActions
         { 
             get 
             { 
@@ -47,7 +49,7 @@ namespace Application
             } 
         }
 
-        public ItemActions ItemActions 
+        public IActionsItem<Item> ItemActions 
         { 
             get
             {

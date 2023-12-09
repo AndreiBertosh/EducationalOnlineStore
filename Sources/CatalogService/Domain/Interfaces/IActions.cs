@@ -11,7 +11,7 @@
 
         Task<List<T>> GetAll();
 
-        Task<bool> Update(T item);
+        Task<string> Update(T item);
     }
 }
 

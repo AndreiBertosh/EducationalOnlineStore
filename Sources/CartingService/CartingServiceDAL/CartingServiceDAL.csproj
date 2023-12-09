@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <BaseOutputPath>D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceDAL\bin</BaseOutputPath>
+    <BaseIntermediateOutputPath>D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceDAL\obj</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LiteDB" Version="5.0.17" />
+  </ItemGroup>
+
+</Project>

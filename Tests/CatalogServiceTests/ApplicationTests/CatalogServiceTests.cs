@@ -1,8 +1,10 @@
 using Application;
 using Domain.Entities;
+using Domain.Interfaces;
 using Domain.Models;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 
 namespace ApplicationTests
 {
@@ -11,10 +13,12 @@ namespace ApplicationTests
         private readonly string _connection = @"data source=(localdb)\MSSQLLocalDB;Initial Catalog=TestCatalogDb;Integrated Security=True;";
         private readonly InfrastructureContext testDatabase;
         private CatalogService _service;
+        private IAzureServiceBusSendService _azureService;
 
         public CatalogServiceTests()
         {
-            _service = new(_connection);
+            _azureService = new Mock<IAzureServiceBusSendService>().Object;
+            _service = new(_connection, _azureService);
 
             InfrastructureContext db = new()
             {
