@@ -7,6 +7,12 @@
     <RootNamespace>Web_API</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisMode>Recommended</AnalysisMode>
+  </PropertyGroup>
+  
   <ItemGroup>
     <Content Remove="App.config" />
   </ItemGroup>
@@ -27,6 +33,12 @@
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SonarQubeSetting Include="sonar.stylecop.projectFilePath">
+      <Value>$(MSBuildProjectFullPath)</Value>
+    </SonarQubeSetting>
   </ItemGroup>
 
 </Project>

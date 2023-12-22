@@ -3,6 +3,7 @@ using Application.Actions;
 using Domain.Interfaces;
 using Domain.Entities;
 using Domain.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ApplicationTests
 {
@@ -54,7 +55,7 @@ namespace ApplicationTests
             CategoryActions actions = new CategoryActions(repository.Object, itemActions);
 
             // Act
-            var result = actions.Delete(1).Result;
+            bool result = actions.Delete(1).Result;
 
             // Assert
             Assert.True(result);
@@ -75,7 +76,7 @@ namespace ApplicationTests
             CategoryActions actions = new CategoryActions(repository.Object, itemActions);
 
             // Act
-            var result = actions.Delete(1).Result;
+            bool result = actions.Delete(1).Result;
 
             // Assert
             Assert.False(result);
@@ -101,10 +102,10 @@ namespace ApplicationTests
             };
 
             // Act
-            var result = actions.Update(category).Result;
+            string result = actions.Update(category).Result;
 
             // Assert
-            Assert.True(result);
+            Assert.False(result.IsNullOrEmpty());
         }
 
         [Fact]

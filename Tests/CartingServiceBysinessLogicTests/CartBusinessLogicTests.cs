@@ -33,7 +33,7 @@ namespace CartingServiceBysinessLogicTests
             };
 
             // Act
-            var id = cartActions.AddToCart(cartEntity).Result;
+            int id = cartActions.AddToCart(cartEntity).Result;
 
             // Assert
             Assert.True(id > 0);
@@ -59,7 +59,7 @@ namespace CartingServiceBysinessLogicTests
             }
 
             // Act
-            var result = cartActions.RemoevFromCart(cartEntity).Result;
+            bool result = cartActions.RemoevFromCart(cartEntity).Result;
 
             // Assert
             Assert.True(result);

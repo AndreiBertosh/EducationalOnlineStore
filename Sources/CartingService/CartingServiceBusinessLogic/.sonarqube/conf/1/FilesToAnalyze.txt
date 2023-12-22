@@ -1,0 +1,15 @@
+﻿D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceBusinessLogic\Cart.cs
+D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceBusinessLogic\CartActions.cs
+D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceBusinessLogic\CartActionsNew.cs
+D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceBusinessLogic\CartService.cs
+D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceBusinessLogic\Infrastructure\Entities\CartEntity.cs
+D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceBusinessLogic\Infrastructure\Entities\CartItem.cs
+D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceBusinessLogic\Infrastructure\Entities\Item.cs
+D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceBusinessLogic\Infrastructure\Interfaces\ICart.cs
+D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceBusinessLogic\Infrastructure\Interfaces\ICartActions.cs
+D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceBusinessLogic\Infrastructure\Interfaces\ICartActionsNew.cs
+D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceBusinessLogic\Infrastructure\Mapers\ItemToCartItemMappers.cs
+D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceBusinessLogic\Infrastructure\Mapers\ItemToEntityMappers.cs
+D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceBusinessLogic\Infrastructure\Settings\DatabaseSettings.cs
+D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceBusinessLogic\Infrastructure\Settings\QueueSettings.cs
+D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceBusinessLogic\sonar.bat

@@ -32,7 +32,7 @@ namespace CartingServiceDALTests
             };
 
             // Act
-            var id = repository.Add(cartItem).Result;
+            int id = repository.Add(cartItem).Result;
 
             // Assert
             Assert.True(id > 0);
@@ -58,7 +58,7 @@ namespace CartingServiceDALTests
             }
 
             // Act
-            var result = repository.Delete(cartItem).Result;
+            bool result = repository.Delete(cartItem).Result;
 
             // Assert
             Assert.True(result);

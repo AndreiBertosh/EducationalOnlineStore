@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Sources\CartingService\CartingServiceBusinessLogic.csproj" />
     <ProjectReference Include="..\..\Sources\CartingService\CartingServiceBusinessLogic\CartingServiceBusinessLogic.csproj" />
     <ProjectReference Include="..\..\Sources\CartingService\CartingServiceDAL\CartingServiceDAL.csproj" />
   </ItemGroup>

@@ -94,7 +94,7 @@ namespace CartingWEBAPITests
             // Act
             var result = _cartingServiceControllerV1.Add(cartEntity);
             var resultType = result as OkObjectResult;
-            var resultValue = Convert.ToInt32(resultType?.Value);
+            int resultValue = Convert.ToInt32(resultType?.Value);
 
             // Assert
             Assert.NotNull(result);
@@ -155,7 +155,6 @@ namespace CartingWEBAPITests
             // Act
             var result = _cartingServiceControllerV1.Delete(request);
             var resultType = result as OkObjectResult;
-            var resultValue = resultType?.Value;
 
             // Assert
             Assert.NotNull(result);

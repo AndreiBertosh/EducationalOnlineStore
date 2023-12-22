@@ -19,6 +19,7 @@ namespace CartingServiceWEBAPI.Controllers.V1
     [HttpPost]
         public ActionResult SetReseiverState([FromBody] bool value)
         {
+
             if (value)
             {
                 _azureServiceBusReceiver.StartReceive();

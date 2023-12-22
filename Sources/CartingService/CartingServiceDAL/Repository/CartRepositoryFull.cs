@@ -1,6 +1,7 @@
 ﻿using CartingServiceDAL.Entities;
 using CartingServiceDAL.Infrastructure.Interfaces;
 using LiteDB;
+using System.Linq;
 
 namespace CartingServiceDAL.Repository
 {
@@ -37,9 +38,12 @@ namespace CartingServiceDAL.Repository
                 var result = collection.Find(c => c.Name == cartName).FirstOrDefault();
                 if (result != null)
                 {
-                    result.Items.Remove(result.Items.FirstOrDefault(i => i.Id == itemId));
-                    collection.Update(result);
-
+                    var removeItems = result.Items.Find(i => i.Id == itemId);
+                    if (removeItems != null)
+                    {
+                        result.Items.Remove(removeItems);
+                        collection.Update(result);
+                    }
                     return Task.FromResult(true);
                 }
             }
@@ -49,13 +53,11 @@ namespace CartingServiceDAL.Repository
 
         public Task<CartModel?> GetAll(string cartName)
         {
-            CartModel result = new();
             using (var database = new LiteDatabase(_databaseName))
             {
                 var collection = database.GetCollection<CartModel>(_collectionName);
-                result = collection.Find(c => c.Name == cartName).FirstOrDefault();
+                return Task.FromResult(collection.Find(c => c.Name == cartName).FirstOrDefault());
             }
-            return Task.FromResult(result);
         }
 
         public Task<CartModel?> GetById(int id)
@@ -94,25 +96,22 @@ namespace CartingServiceDAL.Repository
                 var collection = database.GetCollection<CartModel>(_collectionName);
                 var carts = collection.FindAll();
                 
-                foreach (var cart in carts) 
+                foreach (var cart in carts.Where(c => c.Id == item.Id)) 
                 {
-                    if (cart.Items.Any(c => c.Id == item.Id))
-                    {
-                        var items = cart.Items
-                            .Where(c => c.Id == item.Id)
-                            .Select(c => new CartItemModel
-                            {
-                                Id = c.Id,
-                                Name = item.Name,
-                                ImageUrl = item.ImageUrl,
-                                Price = item.Price,
-                                Quantity = c.Quantity
-                            }).ToList();
-                        cart.Items.RemoveAll(c => c.Id == item.Id);
-                        cart.Items.AddRange(items);
-                        cart.Items = cart.Items.OrderBy(c => c.Id).ToList();
-                        collection.Update(cart);
-                    }
+                    var items = cart.Items
+                        .Where(c => c.Id == item.Id)
+                        .Select(c => new CartItemModel
+                        {
+                            Id = c.Id,
+                            Name = item.Name,
+                            ImageUrl = item.ImageUrl,
+                            Price = item.Price,
+                            Quantity = c.Quantity
+                        }).ToList();
+                    cart.Items.RemoveAll(c => c.Id == item.Id);
+                    cart.Items.AddRange(items);
+                    cart.Items = cart.Items.OrderBy(c => c.Id).ToList();
+                    collection.Update(cart);
                 }
                 return Task.FromResult(true);
             }

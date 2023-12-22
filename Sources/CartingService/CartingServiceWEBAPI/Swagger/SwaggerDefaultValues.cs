@@ -51,5 +51,10 @@ namespace SwaggerVersioningTestWEBAPI.Swagger
                 parameter.Required |= description.IsRequired;
             }
         }
+
+        public static string getversion()
+        {
+            return string.Empty;
+        }
     }
 }

@@ -1,0 +1,1 @@
+D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceBusinessLogic\.sonarqube\out\1

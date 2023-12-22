@@ -6,8 +6,8 @@ namespace CartingServiceDAL.Entities
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
-        public List<CartItemModel> Items { get; set; }
+        public List<CartItemModel> Items { get; set; } = new List<CartItemModel>();
     }
 }

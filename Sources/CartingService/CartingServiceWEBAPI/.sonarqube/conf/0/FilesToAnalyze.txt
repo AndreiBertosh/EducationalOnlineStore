@@ -1,0 +1,8 @@
+﻿D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceDAL\Entities\CartItemModel.cs
+D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceDAL\Entities\CartModel.cs
+D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceDAL\Infrastructure\Interfaces\ICartEntity.cs
+D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceDAL\Infrastructure\Interfaces\IEntity.cs
+D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceDAL\Infrastructure\Interfaces\IRepository.cs
+D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceDAL\Infrastructure\Interfaces\IRepositoryFull.cs
+D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceDAL\Repository\CartRepository.cs
+D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceDAL\Repository\CartRepositoryFull.cs

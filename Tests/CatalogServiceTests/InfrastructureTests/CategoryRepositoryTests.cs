@@ -44,15 +44,15 @@ namespace InfrastructureTests
                 Name = "testCategory" 
             };
             var repository = new CategoryRepository(testDatabase);
-            var expectedRecordsCount = testDatabase.Categories.Count() + 1;
+            int expectedRecordsCount = testDatabase.Categories.Count() + 1;
 
             // Act
-            var id = repository.Add(category).Result;
+            int id = repository.Add(category).Result;
 
             // Assert
             Assert.True(testDatabase.Categories.Any());
             Assert.True(id > 0);
-            var recordsCount = testDatabase.Categories.Count();
+            int recordsCount = testDatabase.Categories.Count();
             Assert.Equal(expectedRecordsCount, recordsCount);
         }
 
@@ -66,7 +66,7 @@ namespace InfrastructureTests
             var repository = new CategoryRepository(testDatabase);
 
             // Act
-            var result = repository.Delete(category.Id).Result;
+            bool result = repository.Delete(category.Id).Result;
 
             // Assert
             Assert.True(result);
@@ -79,7 +79,7 @@ namespace InfrastructureTests
             var repository = new CategoryRepository(testDatabase);
 
             // Act
-            var result = repository.Delete(1000000).Result;
+            bool result = repository.Delete(1000000).Result;
 
             // Assert
             Assert.False(result);
@@ -108,7 +108,7 @@ namespace InfrastructureTests
             var repository = new CategoryRepository(testDatabase);
 
             // Act
-            var result = repository.Update(category).Result;
+            bool result = repository.Update(category).Result;
 
             // Assert
             Assert.True(result);

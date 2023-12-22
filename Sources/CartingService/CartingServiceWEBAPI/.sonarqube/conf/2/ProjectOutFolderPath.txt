@@ -1,0 +1,1 @@
+D:\EPAM\Learn\.Net Advanced\Project\EducationalOnlineStore\Sources\CartingService\CartingServiceWEBAPI\.sonarqube\out\2

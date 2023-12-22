@@ -22,7 +22,6 @@ namespace CartingServiceDAL.Repository
                 var collection = database.GetCollection<T>(_collectionName);
                 collection.Insert(item);
             }
-
             return Task.FromResult(item.Id);
         }
 
@@ -39,13 +38,11 @@ namespace CartingServiceDAL.Repository
 
         public Task<List<T>> GetAll()
         {
-            var result = new List<T>();
             using (var database = new LiteDatabase(_databaseName))
             {
                 var collection = database.GetCollection<T>(_collectionName);
-                result = collection.FindAll().ToList();
+                return Task.FromResult(collection.FindAll().ToList());
             }
-            return Task.FromResult(result);
         }
 
         public Task<T?> GetById(int id)
