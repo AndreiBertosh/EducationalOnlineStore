@@ -18,7 +18,6 @@ namespace CartingService
 
         public Task<int> AddToCart(T item)
         {
-
             int id = _cartRepository.Add(ItemToEntityMappers.ItemToModelMapper().Map<CartItemModel>(item)).Result;
 
             return Task.FromResult(id);
