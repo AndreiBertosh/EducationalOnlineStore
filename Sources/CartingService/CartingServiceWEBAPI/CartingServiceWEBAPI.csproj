@@ -10,11 +10,20 @@
     <NoWarn>$(NoWarn);1591</NoWarn>
     <UserSecretsId>18bca9ed-bb12-4868-b667-f77d003483af</UserSecretsId>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Protos\greet.proto" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="7.1.0" />
     <PackageReference Include="Azure.Identity" Version="1.10.4" />
     <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.17.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.25.1" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.60.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.60.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.3" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
@@ -24,6 +33,10 @@
   <ItemGroup>
     <ProjectReference Include="..\CartingServiceBusinessLogic\CartingServiceBusinessLogic.csproj" />
     <ProjectReference Include="..\CartingServiceDAL\CartingServiceDAL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Protos\greet.proto" GrpcServices="Server" />
   </ItemGroup>
 
   <ItemGroup>

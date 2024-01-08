@@ -79,6 +79,12 @@ namespace CartingServiceDAL.Repository
                 if (cart != null)
                 {
                     cart.Items = cart.Items.UnionBy(model.Items, c => c.Id).OrderBy(c => c.Id).ToList();
+                    int id = cart.Items.MaxBy(x => x.Id).Id;
+                    foreach (var item in cart.Items.Where(x => x.Id == 0).ToList())
+                    {
+                        item.Id = id + 1;
+                        id++;
+                    }
                     collection.Update(cart);
                 }
                 else

@@ -3,6 +3,7 @@ using CartingServiceBusinessLogic;
 using CartingServiceBusinessLogic.Infrastructure.Interfaces;
 using CartingServiceWEBAPI.Interfaces;
 using CartingServiceWEBAPI.Providers;
+using CartingServiceWEBAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using SwaggerVersioningTestWEBAPI.Swagger;
@@ -19,7 +20,6 @@ namespace CartingServiceWEBAPI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services
                 .AddApiVersioning()
                 .AddApiExplorer(options =>
@@ -44,6 +44,9 @@ namespace CartingServiceWEBAPI
                 options.DefaultApiVersion = new ApiVersion(1.0);
             });
 
+            // Add services to the container.
+//           builder.Services.AddGrpc();
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -52,8 +55,8 @@ namespace CartingServiceWEBAPI
             {
                 // Add a custom operation filter which sets default values
                 options.OperationFilter<SwaggerDefaultValues>();
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 options.IncludeXmlComments(xmlPath);
             });
 
@@ -73,13 +76,17 @@ namespace CartingServiceWEBAPI
                     // Build a swagger endpoint for each discovered API version
                     foreach (var description in descriptions)
                     {
-                        var url = $"/swagger/{description.GroupName}/swagger.json";
-                        var name = description.GroupName.ToUpperInvariant();
+                        string url = $"/swagger/{description.GroupName}/swagger.json";
+                        string name = description.GroupName.ToUpperInvariant();
                         options.SwaggerEndpoint(url, name);
                     }
                 });
                 app.UseSwagger(options => { options.RouteTemplate = "api-docs/{documentName}/docs.json"; });
             }
+
+            // Configure the HTTP request pipeline.
+            //app.MapGrpcService<GreeterService>();
+            //app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
 
             app.UseHttpsRedirection();
 

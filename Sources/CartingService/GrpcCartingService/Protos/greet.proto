@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcCartingService";
+import "google/protobuf/wrappers.proto";
+
+package greet;
+
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+   // Unary
+  rpc SayHelloNew (HelloRequest) returns (HelloReply);
+  rpc GetCart (GetCartRequest) returns (GetCartResponse);
+  rpc AddItem (AddCartItemrequest) returns (GetCartResponse);
+
+  // Server streaming
+  rpc GetCartServerStream (GetCartRequest) returns (stream GetCartResponse);
+
+  // Client streaming
+  rpc AddItemFromClient (stream AddCartItemrequest) returns (GetCartResponse);
+
+    // Bi-directional streaming
+  rpc AddItemBothWays (stream AddCartItemrequest) returns (stream GetCartResponse);
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+message GetCartRequest {
+  string cartName = 1;
+}
+
+message AddCartItemrequest {
+	string cartName = 1;
+	GRPCCartItem item = 2;
+}
+
+// The response message containing the greetings.
+message HelloReply {
+  string message = 1;
+}
+
+message GetCartResponse {
+	string cartName = 1;
+	repeated GRPCCartItem items = 2;
+}
+
+message GRPCCartItem {
+  int32 id = 1;
+  string name = 2;
+  string imaleUrl = 3;
+  int32 price = 4;
+  int32 quantity = 5;
+}
+

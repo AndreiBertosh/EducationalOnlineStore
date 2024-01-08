@@ -42,7 +42,7 @@ namespace CartingServiceWEBAPI.Controllers.V1
         [HttpPost]
         public ActionResult Add([FromBody] CartEntity value)
         {
-            var result = _cartActions.AddToCart(value).Result;
+            int result = _cartActions.AddToCart(value).Result;
             if (result > 0)
             {
                 return Ok(result);
@@ -58,8 +58,8 @@ namespace CartingServiceWEBAPI.Controllers.V1
         [HttpDelete()]
         public ActionResult Delete([FromBody] DeleteRequest request)
         {
-            var cartName = request.Name;
-            var result = _cartActions.RemoevFromCart(request.Name, request.cartItemId).Result;
+            string cartName = request.Name;
+            bool result = _cartActions.RemoevFromCart(request.Name, request.cartItemId).Result;
             if (!result)
             {
                 return BadRequest("Item was not deleted.");

@@ -42,6 +42,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CartingWEBAPITests", "Tests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEBAPITests", "Tests\CatalogServiceTests\WEBAPITests\WEBAPITests.csproj", "{2F928814-4347-426A-A5EE-243E58362940}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcCartingService", "Sources\CartingService\GrpcCartingService\GrpcCartingService.csproj", "{F2287FA0-CD77-4A33-9BE4-732CD9DFD4DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +106,10 @@ Global
 		{2F928814-4347-426A-A5EE-243E58362940}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F928814-4347-426A-A5EE-243E58362940}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F928814-4347-426A-A5EE-243E58362940}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2287FA0-CD77-4A33-9BE4-732CD9DFD4DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2287FA0-CD77-4A33-9BE4-732CD9DFD4DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2287FA0-CD77-4A33-9BE4-732CD9DFD4DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2287FA0-CD77-4A33-9BE4-732CD9DFD4DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -127,6 +133,7 @@ Global
 		{9A27B243-1A9B-4915-A5E3-8166FF7E4F26} = {68F10E73-D917-4A41-8457-3D36559ECBE1}
 		{10BE4A94-0F96-4B5D-B094-13B6D5237865} = {9A27B243-1A9B-4915-A5E3-8166FF7E4F26}
 		{2F928814-4347-426A-A5EE-243E58362940} = {9E6BBC3E-848E-413D-A0EC-9697A4DC4A1A}
+		{F2287FA0-CD77-4A33-9BE4-732CD9DFD4DF} = {0D5E6D17-8C95-423D-84F0-76EC9B23692F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4BD41CBC-9E53-496D-A1F3-9356D820C86C}
